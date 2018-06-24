@@ -1,3 +1,9 @@
+/* @flow */
+
+/*
+	no_template :: fallback when no template applied
+*/
+
 export default new Array([
 	{
 		type:`section`,

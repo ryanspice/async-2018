@@ -1,9 +1,10 @@
 //@flow
 
-import {default as loop} from './loop';
-import {default as data} from './data';
-
 import type {Element} from "./interfaces";
+
+import data from '../no_template.data';
+
+import {default as loop} from './loop';
 
 const templatePicks = [
 	'id',
@@ -20,10 +21,7 @@ const templatePicks = [
 let elms = [];
 let elements = [];
 let elm:Element;
-let templateDefer = [
-
-
-];
+let templateDefer = [	];
 
 /*
 	AsyncRenderPipe
@@ -34,7 +32,7 @@ let templateDefer = [
 export class AsyncRenderPipe {
 
 	context:HTMLDocument = document;
-	template:any = data;
+	template:Array<any> = data;
 
 	constructor(evt:DocumentEvent){
 
