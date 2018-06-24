@@ -1,10 +1,10 @@
 //@flow
 
 import type {Element} from "./interfaces";
-
-import data from '../no_template.data';
-
 import {default as loop} from './loop';
+
+import data from '../../no_template.data';
+
 
 const templatePicks = [
 	'id',

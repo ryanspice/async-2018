@@ -6,10 +6,10 @@
 	"author": "Ryan Tyler Spice-Finnie",
 	"scripts": {
 		"💥": "sudo rm -rf node_modules && yarn && yarn dev",
-		"dev": "webpack-dev-server",
-		"watch": "webpack --watch",
-		"dash": "webpack-dashboard -- webpack-dev-server",
-		"prod": "webpack"
+		"dev": "yarn webpack-dev-server",
+		"watch": "yarn webpack --watch",
+		"dash": "yarn webpack-dashboard -- webpack-dev-server",
+		"prod": "yarn webpack --config webpack.prod.js"
 	},
 	"dependencies": {
 		"babel-core": "^6.26.3",

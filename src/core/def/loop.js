@@ -1,7 +1,10 @@
 //@flow
 
-// self contained, loop
+/*
 
+	self contained, loop
+
+*/
 
 let trace = 0;
 

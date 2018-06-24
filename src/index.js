@@ -1,3 +1,4 @@
+//@flow
 
 import ready from './ready';
 

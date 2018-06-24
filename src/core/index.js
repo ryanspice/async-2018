@@ -1,8 +1,8 @@
 //@flow
 
-import fade from "./fade";
-import markup from "./markup";
-import {data, AsyncRenderPipe} from "./template";
+import fade from "./unused/fade";
+import markup from "./def/markup";
+import {data, AsyncRenderPipe} from "./def/template";
 
 export default {
 	fade,
