@@ -6,6 +6,8 @@ import {default as loop} from './loop';
 import data from '../../no_template.data';
 
 
+let trace = 0;
+
 const templatePicks = [
 	'id',
 	'value',
@@ -16,7 +18,6 @@ const templatePicks = [
 	'onresize',
 	`innerHTML`
 ];
-
 
 let elms = [];
 let elements = [];
@@ -33,12 +34,15 @@ export class AsyncRenderPipe {
 
 	context:HTMLDocument = document;
 	template:Array<any> = data;
+	props:Array<string> = templatePicks;
 
 	constructor(evt:DocumentEvent){
 
 		this.init(evt);
 
 	}
+
+	/* async init */
 
 	async init(evt:any){
 
@@ -48,37 +52,24 @@ export class AsyncRenderPipe {
 
 	}
 
+	/*
+		Create or renderTo
+	*/
+
 	check = async (evt:any)=>{
 
-		if (elms[evt.id])
-		if (elms[evt.id].renderTo){
-
-			//if (typeof elms[evt.id].renderTo === "string"){
-
-
-			//			if (!typeof elms[evt.id].renderTo === "string")
-			//			return;
-
-			//console.log(elms[evt.id].renderTo.appendChild,typeof elms[evt.id].renderTo)
+		if ((elms[evt.id])&&(elms[evt.id].renderTo)) {
 
 			if (typeof elms[evt.id].renderTo === "string"){
 
-				//console.log('fuck',elms[evt.id], document.querySelectorAll(elms[evt.id].renderTo))
-				//let el = document.querySelectorAll(elms[evt.id].renderTo);
-				//el.appendChild(elms[evt.id]);
 				elms[evt.id] = await this.createElementOfType(elms[evt.id]);
-
 
 			}
 
-
 			elms[evt.id].renderTo.appendChild(elms[evt.id]);
 			elms[evt.id] = null;
-		//}
-			//templateDefer[evt.id] = null;
 
 		}
-
 
 	}
 
@@ -103,8 +94,9 @@ export class AsyncRenderPipe {
 	createTemplateItem = async (item:any) => {
 
 		let template = item.value;
+
 		let element = await this.createElementOfType(template);
-		//console.log(element);
+
 		if (element!=false){
 
 			elms[item.id] = (elements[item.id]) = element;
@@ -124,6 +116,7 @@ export class AsyncRenderPipe {
 		let elm:HTML5Element;
 
 		const type:string = template.type;
+
 		const renderTo = await this.createRenderTarget(template);
 
 		elm = (await document.createElement(template.type):HTML5Element);
@@ -152,7 +145,7 @@ export class AsyncRenderPipe {
 					});
 					*/
 
-					elm.onclick = (evt)=>{
+					elm.onclick = (evt) => {
 						evt.stopPropagation();
 						if (typeof template.onclick == 'function'){
 							template.onclick();}
@@ -168,6 +161,8 @@ export class AsyncRenderPipe {
 
 		}
 
+		//Defer template item
+
 		if (renderTo=='2430'){
 
 			templateDefer.push(template);
@@ -175,16 +170,37 @@ export class AsyncRenderPipe {
 			return false;
 		}
 
-		if (templatePicks)
-		for(let prop in templatePicks){
+		//Populate Props
+		/*
+			if (templatePicks)
+			for(let prop in templatePicks){
 
-			if (template[templatePicks[prop]])
-				elm[templatePicks[prop]] = template[templatePicks[prop]];
+				if (template[templatePicks[prop]])
+					elm[templatePicks[prop]] = template[templatePicks[prop]];
 
-		}
+			}
+		*/
+
+		//Populate Props
+		if (this.props)
+			await this.populateProps(this.props,template,elm);
 
 		return elm;
 	}
+
+	/* */
+
+	async populateProps(props, template, elm){
+
+		for(let prop in props){
+
+			if (template[props[prop]])
+				elm[props[prop]] = template[props[prop]];
+
+		}
+
+	}
+
 
 	/* iterate template data and generate html */
 
@@ -199,17 +215,14 @@ export class AsyncRenderPipe {
 
 		trace++;
 
-
 		let layers = tpl;
 		let length = layers.length;
 
-		//let elements = tpl;
 		let type, style, value;
 		let elm;
 
 		await loop(this.template,this.createTemplateItem);
 		await loop(this.template,this.check);
-
 
 		elms = templateDefer;
 
@@ -217,14 +230,10 @@ export class AsyncRenderPipe {
 		await loop([templateDefer],this.createTemplateItem);
 		await loop(this.template,this.check);
 
-
-
 		elms = templateDefer;
 
 	}
 
 }
-
-let trace = 0;
 
 export {data};

@@ -1,8 +1,8 @@
 //@flow
 
-import ready from './ready';
+//import ready from './ready';
 
-console.log( ready);
+//console.log( ready);
 
 import core from './core/index';
 

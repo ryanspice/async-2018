@@ -28,6 +28,8 @@ ready({
 
 export default async function(def:TemplateDefinitions) {
 
+	const define
+
 	return await function(evt) {
 
 		const context:HTMLDocument = document;
