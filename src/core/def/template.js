@@ -37,6 +37,9 @@ export class AsyncRenderPipe {
 		`innerHTML`
 	];
 
+
+	onComplete:Function = () => {};
+
 	constructor(evt:DocumentEvent){
 
 		this.init(evt);
@@ -223,12 +226,6 @@ export class AsyncRenderPipe {
 		}
 
 		trace++;
-
-		let layers = tpl;
-		let length = layers.length;
-
-		let type, style, value;
-		let elm;
 
 		await loop(this.template,this.createTemplateItem);
 		await loop(this.template,this.check);
