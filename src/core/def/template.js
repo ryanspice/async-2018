@@ -1,28 +1,12 @@
 //@flow
 
 import type {Element} from "./interfaces";
+
 import {default as loop} from './loop';
 
 import data from '../../no_template.data';
 
-
 let trace = 0;
-
-const templatePicks = [
-	'id',
-	'value',
-	'class',
-	'className',
-	'onclick',
-	'click',
-	'onresize',
-	`innerHTML`
-];
-
-let elms = [];
-let elements = [];
-let elm:Element;
-let templateDefer = [	];
 
 /*
 	AsyncRenderPipe
@@ -34,7 +18,24 @@ export class AsyncRenderPipe {
 
 	context:HTMLDocument = document;
 	template:Array<any> = data;
-	props:Array<string> = templatePicks;
+
+	defer:Array<any> = [];
+
+	elms:Array<any> = [];
+	elements:Array<any> = [];
+
+	trace:number = 0;
+
+	props:Array<string> = [
+		'id',
+		'value',
+		'class',
+		'className',
+		'onclick',
+		'click',
+		'onresize',
+		`innerHTML`
+	];
 
 	constructor(evt:DocumentEvent){
 
@@ -58,22 +59,24 @@ export class AsyncRenderPipe {
 
 	check = async (evt:any)=>{
 
-		if ((elms[evt.id])&&(elms[evt.id].renderTo)) {
+		if ((this.elms[evt.id])&&(this.elms[evt.id].renderTo)) {
 
-			if (typeof elms[evt.id].renderTo === "string"){
+			if (typeof this.elms[evt.id].renderTo === "string"){
 
-				elms[evt.id] = await this.createElementOfType(elms[evt.id]);
+				this.elms[evt.id] = await this.createElementOfType(this.elms[evt.id]);
 
 			}
 
-			elms[evt.id].renderTo.appendChild(elms[evt.id]);
-			elms[evt.id] = null;
+			this.elms[evt.id].renderTo.appendChild(this.elms[evt.id]);
+			this.elms[evt.id] = null;
 
 		}
 
 	}
 
-	/* generate a reference to the target element, or body if none */
+	/*
+		generate a reference to the target element, or body if none
+	*/
 
 	async createRenderTarget(template:TemplateElement){
 
@@ -89,7 +92,9 @@ export class AsyncRenderPipe {
 		return this.context.querySelectorAll(template.renderTo)[0] || this.context.body;
 	}
 
-	/**/
+	/*
+
+	*/
 
 	createTemplateItem = async (item:any) => {
 
@@ -99,7 +104,7 @@ export class AsyncRenderPipe {
 
 		if (element!=false){
 
-			elms[item.id] = (elements[item.id]) = element;
+			this.elms[item.id] = (this.elements[item.id]) = element;
 
 		} else {
 
@@ -109,7 +114,9 @@ export class AsyncRenderPipe {
 
 	}
 
-	/* Create a DOM element in memory */
+	/*
+		Create a DOM element in memory
+	*/
 
 	async createElementOfType(template:TemplateElement){
 
@@ -165,7 +172,7 @@ export class AsyncRenderPipe {
 
 		if (renderTo=='2430'){
 
-			templateDefer.push(template);
+			this.defer.push(template);
 
 			return false;
 		}
@@ -202,7 +209,9 @@ export class AsyncRenderPipe {
 	}
 
 
-	/* iterate template data and generate html */
+	/*
+		iterate template data and generate html
+	*/
 
 	async iterateTemplate(tpl:any){
 
@@ -224,16 +233,20 @@ export class AsyncRenderPipe {
 		await loop(this.template,this.createTemplateItem);
 		await loop(this.template,this.check);
 
-		elms = templateDefer;
+		this.elms = this.defer;
 
 		//TODO: recursive
-		await loop([templateDefer],this.createTemplateItem);
+		await loop([this.defer],this.createTemplateItem);
 		await loop(this.template,this.check);
 
-		elms = templateDefer;
+		this.elms = this.defer;
 
 	}
 
 }
+
+/*
+	Default Data Template
+*/
 
 export {data};
