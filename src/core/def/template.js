@@ -50,7 +50,7 @@ export class AsyncRenderPipe {
 
 	async init(evt:any){
 
-		this.context = await evt.currentTarget;
+		this.context = document;//await evt.currentTarget;
 
 		await this.iterateTemplate(this.template[0])
 
