@@ -34,6 +34,7 @@ export class AsyncRenderPipe {
 		'onclick',
 		'click',
 		'onresize',
+		'activity',
 		`innerHTML`
 	];
 
@@ -64,10 +65,13 @@ export class AsyncRenderPipe {
 
 		if ((this.elms[evt.id])&&(this.elms[evt.id].renderTo)) {
 
-			if (typeof this.elms[evt.id].renderTo === "string"){
+			switch(typeof this.elms[evt.id].renderTo){
 
-				this.elms[evt.id] = await this.createElementOfType(this.elms[evt.id]);
+				case "string":
 
+					this.elms[evt.id] = await this.createElementOfType(this.elms[evt.id]);
+
+				break;
 			}
 
 			this.elms[evt.id].renderTo.appendChild(this.elms[evt.id]);
