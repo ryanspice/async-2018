@@ -66,45 +66,56 @@ export class AsyncRenderPipe {
 	scrollcount = 0;
 	check = async (evt:any)=>{
 
-		if ((this.elms[evt.id])&&(this.elms[evt.id].renderTo)) {
+		let elm = this.elms[evt.id];
 
-			switch(typeof this.elms[evt.id].renderTo){
+		if ((elm)&&(elm.renderTo)) {
+
+			switch(typeof elm.renderTo){
 
 				case "string":
 
-					this.elms[evt.id] = await this.createElementOfType(this.elms[evt.id]);
+					elm = this.elms[evt.id] = await this.createElementOfType(this.elms[evt.id]);
 
 				break;
 			}
 
-			if (this.elms[evt.id].renderTo.id=='scroll') {
-
-				console.log("APPEND TO SCROLL ::")
-				console.log(this.elms[evt.id].renderTo)
-
-/*
-*/
-
-		if (this.scrollcount==0){
-
-			this.elms[evt.id].renderTo.appendChild(this.elms[evt.id], null);
 			this.scrollcount++;
-			return;}
-		console.log(this.elms[evt.id])
-		console.log(this.elms[evt.id].renderTo.children[0])
 
-this.elms[evt.id].renderTo.appendBefore = (element, t)=> {
-    element.parentNode.insertBefore(t, element);
-};
+			if (elm.renderTo.id=='scroll') {
 
-this.elms[evt.id].renderTo.appendAfter = (element, t)=> {
-    element.parentNode.insertBefore(t, element.nextSibling);
-};
-				this.elms[evt.id].renderTo.appendBefore(this.elms[evt.id].renderTo.children[0], this.elms[evt.id]);
 
-			}
-				else
-				this.elms[evt.id].renderTo.appendChild(this.elms[evt.id], null);
+				//FIRST APPEND
+				console.log(elm.id)
+				if (elm.renderTo.children.length==0){
+
+					elm.renderTo.appendChild(elm, null);
+
+					return;
+				}
+
+
+				elm.renderTo.appendBefore = (element, t)=> {
+				    element.parentNode.insertBefore(t, element);
+				};
+
+				elm.renderTo.appendAfter = (element, t)=> {
+				    element.parentNode.insertBefore(t, element.nextSibling);
+				};
+
+				//APPEND PLUS ( usually at end )
+
+				if (elm.id=="plus"){
+
+					elm.renderTo.appendBefore(elm.renderTo.children[0], elm);
+
+					return;
+				}
+
+
+				elm.renderTo.insertBefore(elm,elm.renderTo.children[0].nextSibling)
+
+
+			}	else this.elms[evt.id].renderTo.appendChild(this.elms[evt.id], null);
 
 			this.elms[evt.id] = null;
 
