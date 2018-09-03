@@ -6,6 +6,9 @@ import {default as loop} from './loop';
 
 import data from '../../no_template.data';
 
+Object.prototype.insertAfter = function (newNode) { this.parentNode.insertBefore(newNode, this.nextSibling); }
+
+
 let trace = 0;
 
 /*
@@ -60,7 +63,7 @@ export class AsyncRenderPipe {
 	/*
 		Create or renderTo
 	*/
-
+	scrollcount = 0;
 	check = async (evt:any)=>{
 
 		if ((this.elms[evt.id])&&(this.elms[evt.id].renderTo)) {
@@ -74,7 +77,35 @@ export class AsyncRenderPipe {
 				break;
 			}
 
-			this.elms[evt.id].renderTo.appendChild(this.elms[evt.id]);
+			if (this.elms[evt.id].renderTo.id=='scroll') {
+
+				console.log("APPEND TO SCROLL ::")
+				console.log(this.elms[evt.id].renderTo)
+
+/*
+*/
+
+		if (this.scrollcount==0){
+
+			this.elms[evt.id].renderTo.appendChild(this.elms[evt.id], null);
+			this.scrollcount++;
+			return;}
+		console.log(this.elms[evt.id])
+		console.log(this.elms[evt.id].renderTo.children[0])
+
+this.elms[evt.id].renderTo.appendBefore = (element, t)=> {
+    element.parentNode.insertBefore(t, element);
+};
+
+this.elms[evt.id].renderTo.appendAfter = (element, t)=> {
+    element.parentNode.insertBefore(t, element.nextSibling);
+};
+				this.elms[evt.id].renderTo.appendBefore(this.elms[evt.id].renderTo.children[0], this.elms[evt.id]);
+
+			}
+				else
+				this.elms[evt.id].renderTo.appendChild(this.elms[evt.id], null);
+
 			this.elms[evt.id] = null;
 
 		}
@@ -108,10 +139,11 @@ export class AsyncRenderPipe {
 		let template = item.value;
 
 		let element = await this.createElementOfType(template);
-
 		if (element!=false){
 
 			this.elms[item.id] = (this.elements[item.id]) = element;
+			//console.log(item.id, element)
+			element.template = item.id;
 
 		} else {
 
@@ -134,7 +166,7 @@ export class AsyncRenderPipe {
 		const renderTo = await this.createRenderTarget(template);
 
 		elm = (await document.createElement(template.type):HTML5Element);
-
+		elm.afterConstruct = template.afterConstruct;
 		switch(type){
 
 			case "style":
@@ -198,6 +230,10 @@ export class AsyncRenderPipe {
 		//Populate Props
 		if (this.props)
 			await this.populateProps(this.props,template,elm);
+
+		if (elm.afterConstruct){
+			elm.afterConstruct();
+		}
 
 		return elm;
 	}
