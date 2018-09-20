@@ -9,7 +9,7 @@ import data from '../../no_template.data';
 Object.prototype.insertAfter = function (newNode) { this.parentNode.insertBefore(newNode, this.nextSibling); }
 
 
-let trace = 0;
+let trace:string = 0;
 
 /*
 	AsyncRenderPipe
@@ -44,19 +44,20 @@ export class AsyncRenderPipe {
 
 	onComplete:Function = () => {};
 
-	constructor(evt:DocumentEvent){
-
-		this.init(evt);
+	constructor(template){
+		console.log(template);
+		this.template[0] = template;
+		this.init();
 
 	}
 
 	/* async init */
 
-	async init(evt:any){
+	async init(){
 
 		this.context = document;//await evt.currentTarget;
 
-		await this.iterateTemplate(this.template[0])
+		await this.iterateTemplate(this.template[0]);//this.template[0])
 
 	}
 
@@ -283,9 +284,11 @@ export class AsyncRenderPipe {
 
 		this.elms = this.defer;
 
+		console.log('eh')
 		//TODO: recursive
 		await loop([this.defer],this.createTemplateItem);
 		await loop(this.template,this.check);
+		console.log('eh')
 
 		this.elms = this.defer;
 
