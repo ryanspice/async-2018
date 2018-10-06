@@ -45,7 +45,7 @@ export class AsyncRenderPipe {
 	onComplete:Function = () => {};
 
 	constructor(template){
-		console.log(template);
+
 		this.template[0] = template;
 		this.init();
 
@@ -65,6 +65,7 @@ export class AsyncRenderPipe {
 		Create or renderTo
 	*/
 	scrollcount = 0;
+
 	check = async (evt:any)=>{
 
 		let elm = this.elms[evt.id];
@@ -86,7 +87,7 @@ export class AsyncRenderPipe {
 
 
 				//FIRST APPEND
-				console.log(elm.id)
+				//console.log(elm.id)
 				if (elm.renderTo.children.length==0){
 
 					elm.renderTo.appendChild(elm, null);
@@ -284,11 +285,9 @@ export class AsyncRenderPipe {
 
 		this.elms = this.defer;
 
-		console.log('eh')
 		//TODO: recursive
 		await loop([this.defer],this.createTemplateItem);
 		await loop(this.template,this.check);
-		console.log('eh')
 
 		this.elms = this.defer;
 

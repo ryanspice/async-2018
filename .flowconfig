@@ -5,32 +5,23 @@
 .*/test/.*
 .*/config/.*
 .*/static/.*
+.*/node_modules/.*
 
 [include]
 
 [libs]
-./flow-typed/
-./flow-typed/*
-./flow-typed/npm/*
-flow/
-/flow-typed
-
-[lints]
 
 [options]
+module.name_mapper='^src/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
 module.system=haste
 esproposal.class_static_fields=enable
 esproposal.class_instance_fields=enable
+module.ignore_non_literal_requires=true
 esproposal.decorators=ignore
 esproposal.export_star_as=enable
-
-module.ignore_non_literal_requires=true
-
 module.file_ext=.vue
 module.file_ext=.js
 module.file_ext=.css
 module.file_ext=.scss
-# webpack module alias
-module.name_mapper='^src/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
 
 [strict]
