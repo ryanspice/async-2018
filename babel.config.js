@@ -7,6 +7,7 @@ module.exports = function (api) {
 			{
 				"modules": false,
 				"useBuiltIns": false,
+				"shippedProposals":true,
 				"targets": {
 					"browsers": "Chrome 69"
 				},

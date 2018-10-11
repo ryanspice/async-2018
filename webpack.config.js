@@ -18,7 +18,10 @@ module.exports = {
 	output: {
 		filename: filename,
 		chunkFilename: '[name].bundle.js',
-		path: path.resolve(__dirname, 'dist')
+		path: path.resolve(__dirname, 'dist'),
+    library: 'async.2018',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
 	},
 	resolve: {
 		extensions: ['.js', '.scss', '.css'],

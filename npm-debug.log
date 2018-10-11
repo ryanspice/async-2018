@@ -1,45 +1,101 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'link', '@async.2018' ]
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'publish' ]
 2 info using npm@3.5.2
 3 info using node@v8.10.0
-4 silly loadCurrentTree Starting
-5 silly install loadCurrentTree
-6 silly install readGlobalPackageData
-7 silly fetchPackageMetaData @async.2018
-8 silly fetchOtherPackageData @async.2018
-9 silly cache add args [ '@async.2018', null ]
-10 verbose cache add spec @async.2018
-11 silly cache add parsed spec Result {
-11 silly cache add   raw: '@async.2018',
-11 silly cache add   scope: null,
-11 silly cache add   name: null,
-11 silly cache add   rawSpec: '@async.2018',
-11 silly cache add   spec: '/mnt/c/Dev/Private/async-2018/@async.2018',
-11 silly cache add   type: 'local' }
-12 error addLocal Could not install /mnt/c/Dev/Private/async-2018/@async.2018
-13 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/mnt/c/Dev/Private/async-2018/@async.2018'
-13 silly fetchPackageMetaData  error for @async.2018 { Error: ENOENT: no such file or directory, open '/mnt/c/Dev/Private/async-2018/@async.2018'
-13 silly fetchPackageMetaData   errno: -2,
-13 silly fetchPackageMetaData   code: 'ENOENT',
-13 silly fetchPackageMetaData   syscall: 'open',
-13 silly fetchPackageMetaData   path: '/mnt/c/Dev/Private/async-2018/@async.2018' }
-14 silly rollbackFailedOptional Starting
-15 silly rollbackFailedOptional Finishing
-16 silly runTopLevelLifecycles Starting
-17 silly runTopLevelLifecycles Finishing
-18 silly install printInstalled
-19 verbose stack Error: ENOENT: no such file or directory, open '/mnt/c/Dev/Private/async-2018/@async.2018'
-20 verbose cwd /mnt/c/Dev/Private/async-2018
-21 error Linux 4.4.0-17134-Microsoft
-22 error argv "/usr/bin/node" "/usr/bin/npm" "link" "@async.2018"
-23 error node v8.10.0
-24 error npm  v3.5.2
-25 error path /mnt/c/Dev/Private/async-2018/@async.2018
-26 error code ENOENT
-27 error errno -2
-28 error syscall open
-29 error enoent ENOENT: no such file or directory, open '/mnt/c/Dev/Private/async-2018/@async.2018'
-30 error enoent ENOENT: no such file or directory, open '/mnt/c/Dev/Private/async-2018/@async.2018'
-30 error enoent This is most likely not a problem with npm itself
-30 error enoent and is related to npm not being able to find a file.
-31 verbose exit [ -2, true ]
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/mnt/d/Dev/Private/async-2018',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /home/spice/.npm/async.2018/1.1.0/package.tgz not in flight; packing
+9 info lifecycle async.2018@1.1.0~prepublish: async.2018@1.1.0
+10 silly lifecycle async.2018@1.1.0~prepublish: no script for prepublish, continuing
+11 verbose tar pack [ '/home/spice/.npm/async.2018/1.1.0/package.tgz',
+11 verbose tar pack   '/mnt/d/Dev/Private/async-2018' ]
+12 verbose tarball /home/spice/.npm/async.2018/1.1.0/package.tgz
+13 verbose folder /mnt/d/Dev/Private/async-2018
+14 verbose addLocalTarball adding from inside cache /home/spice/.npm/async.2018/1.1.0/package.tgz
+15 silly cache afterAdd async.2018@1.1.0
+16 verbose afterAdd /home/spice/.npm/async.2018/1.1.0/package/package.json not in flight; writing
+17 verbose afterAdd /home/spice/.npm/async.2018/1.1.0/package/package.json written
+18 silly publish { name: 'async.2018',
+18 silly publish   version: '1.1.0',
+18 silly publish   description: '',
+18 silly publish   private: true,
+18 silly publish   author: { name: 'Ryan Tyler Spice-Finnie' },
+18 silly publish   scripts:
+18 silly publish    { boom: 'sudo rm -rf node_modules && yarn && yarn dev',
+18 silly publish      dev: 'yarn watch',
+18 silly publish      watch: 'yarn webpack --watch',
+18 silly publish      dash: 'yarn webpack-dashboard -- webpack-dev-server',
+18 silly publish      prod: 'yarn webpack --config webpack.prod.js' },
+18 silly publish   dependencies:
+18 silly publish    { '@babel/core': '^7.0.0',
+18 silly publish      '@babel/plugin-proposal-class-properties': '^7.0.0',
+18 silly publish      '@babel/plugin-proposal-decorators': '^7.0.0',
+18 silly publish      '@babel/plugin-proposal-export-default-from': '^7.0.0',
+18 silly publish      '@babel/plugin-proposal-export-namespace-from': '^7.0.0',
+18 silly publish      '@babel/plugin-proposal-function-sent': '^7.0.0',
+18 silly publish      '@babel/plugin-proposal-json-strings': '^7.0.0',
+18 silly publish      '@babel/plugin-proposal-numeric-separator': '^7.0.0',
+18 silly publish      '@babel/plugin-proposal-throw-expressions': '^7.0.0',
+18 silly publish      '@babel/plugin-syntax-dynamic-import': '^7.0.0',
+18 silly publish      '@babel/plugin-syntax-import-meta': '^7.0.0',
+18 silly publish      '@babel/plugin-transform-flow-strip-types': '^7.0.0',
+18 silly publish      '@babel/plugin-transform-runtime': '^7.0.0',
+18 silly publish      '@babel/preset-env': '^7.0.0',
+18 silly publish      '@babel/preset-stage-2': '^7.0.0',
+18 silly publish      '@babel/runtime': '^7.0.0',
+18 silly publish      'babel-loader': '^8.0.0',
+18 silly publish      'babel-plugin-flow-runtime': '^0.17.0',
+18 silly publish      'babel-plugin-transform-decorators-legacy': '^1.3.4',
+18 silly publish      'babel-upgrade': '^0.0.23',
+18 silly publish      'copy-webpack-plugin': '^4.5.1',
+18 silly publish      'css-loader': '^0.28.11',
+18 silly publish      'flow-bin': '^0.81.0',
+18 silly publish      'flow-runtime': '^0.17.0',
+18 silly publish      'flow-runtime-cli': '^0.17.0',
+18 silly publish      'mini-css-extract-plugin': '^0.4.1',
+18 silly publish      'node-sass': '^4.9.0',
+18 silly publish      'sass-loader': '^7.0.1',
+18 silly publish      'style-loader': '^0.21.0',
+18 silly publish      webpack: '^4.6.0',
+18 silly publish      'webpack-cli': '^2.0.15',
+18 silly publish      'webpack-dev-server': '^3.1.3' },
+18 silly publish   devDependencies:
+18 silly publish    { '@babel/cli': '^7.0.0',
+18 silly publish      '@babel/core': '^7.0.0',
+18 silly publish      '@babel/preset-flow': '^7.0.0' },
+18 silly publish   gitHead: '861c9a3620f5b36c121a20488b498b4ed309dfd5',
+18 silly publish   readme: 'ERROR: No README data found!',
+18 silly publish   _id: 'async.2018@1.1.0',
+18 silly publish   _shasum: 'fd66ca1fa355540360537d1ab98e8be281fa823e',
+18 silly publish   _from: '.' }
+19 verbose getPublishConfig undefined
+20 verbose stack Error: This package has been marked as private
+20 verbose stack Remove the 'private' field from the package.json to publish it.
+20 verbose stack     at publish_ (/usr/share/npm/lib/publish.js:100:15)
+20 verbose stack     at Array.<anonymous> (/usr/share/npm/node_modules/slide/lib/bind-actor.js:15:8)
+20 verbose stack     at LOOP (/usr/share/npm/node_modules/slide/lib/chain.js:15:14)
+20 verbose stack     at LOOP (/usr/share/npm/node_modules/slide/lib/chain.js:14:28)
+20 verbose stack     at chain (/usr/share/npm/node_modules/slide/lib/chain.js:20:5)
+20 verbose stack     at /usr/share/npm/lib/publish.js:72:5
+20 verbose stack     at RES (/usr/share/npm/node_modules/inflight/inflight.js:23:14)
+20 verbose stack     at f (/usr/share/npm/node_modules/once/once.js:17:25)
+20 verbose stack     at /usr/share/npm/lib/cache.js:361:16
+20 verbose stack     at /usr/share/npm/node_modules/write-file-atomic/index.js:29:9
+21 verbose cwd /mnt/d/Dev/Private/async-2018
+22 error Linux 4.4.0-17134-Microsoft
+23 error argv "/usr/bin/node" "/usr/bin/npm" "publish"
+24 error node v8.10.0
+25 error npm  v3.5.2
+26 error This package has been marked as private
+26 error Remove the 'private' field from the package.json to publish it.
+27 error If you need help, you may report this error at:
+27 error     <https://github.com/npm/npm/issues>
+28 verbose exit [ 1, true ]
