@@ -46,7 +46,23 @@ export class AsyncRenderPipe {
 	constructor(template, pre=()=>{}, post=()=>{}){
 
 		this.context.state = 0;
+		let ors = document.onreadystatechange;
+
+		if (document.readyState === "complete") {
+
+			if(ors)
+				ors();
+			pre();
+			post();
+			this.template[0] = template;
+			this.init();
+			return;
+		}
+
 		this.context.onreadystatechange = async (evt:Event)=>{
+
+			if (ors)
+				ors();
 
 			switch(this.context.state){
 
