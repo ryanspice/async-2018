@@ -41,13 +41,34 @@ export class AsyncRenderPipe {
 		`innerHTML`
 	];
 
-
 	onComplete:Function = () => {};
 
-	constructor(template){
+	constructor(template, pre=()=>{}, post=()=>{}){
 
-		this.template[0] = template;
-		this.init();
+		this.context.state = 0;
+		this.context.onreadystatechange = async (evt:Event)=>{
+
+			switch(this.context.state){
+
+				case 0:
+
+					pre();
+					this.context.state++;
+
+				break;
+
+				case 1:
+
+					post();
+					this.context.state++;
+
+					this.template[0] = template;
+					this.init();
+
+				break;
+			}
+
+		};
 
 	}
 
