@@ -6,10 +6,12 @@
 	"author": "Ryan Tyler Spice-Finnie",
 	"scripts": {
 		"boom": "sudo rm -rf node_modules && yarn && yarn dev",
-		"dev": "yarn watch",
-		"watch": "yarn webpack --watch",
-		"dash": "yarn webpack-dashboard -- webpack-dev-server",
-		"prod": "yarn webpack --config webpack.prod.js"
+		"dev": "yarn webpack --watch --env.NODE_ENV=local",
+		"watch": "yarn prod --watch",
+		"prod": "yarn webpack --config webpack.prod.js --env.NODE_ENV=production",
+		"legacy": "yarn webpack --config webpack.prod.js --env.NODE_ENV=legacy",
+		"release":"yarn prod && yarn legacy",
+		"dash": "yarn webpack-dashboard -- webpack-dev-server"
 	},
 	"dependencies": {
 		"@babel/core": "^7.0.0",
