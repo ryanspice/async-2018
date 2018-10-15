@@ -21,37 +21,38 @@ module.exports = env => {
 			},
 			plugins:[
 			new webpack.DefinePlugin({
-			  'process.env': {
-			    NODE_ENV: JSON.stringify('production')
-			  },
+				'process.env': {
+					NODE_ENV: JSON.stringify('production')
+				},
 			})
 			],
 			optimization: {
 			minimizer: [
-			  new UglifyJSPlugin({
-			    sourceMap: true,
-			    uglifyOptions: {
-			      compress: {
-			        inline: false
-			      }
-			    }
-			  })
+				new UglifyJSPlugin({
+					sourceMap: true,
+					uglifyOptions: {
+						compress: {
+							inline: false
+						}
+					}
+				})
 			],
 			runtimeChunk: false,
 			splitChunks: {
-			  cacheGroups: {
-			    default: false,
-			    commons: {
-			      test: /[\\/]node_modules[\\/]/,
-			      name: 'vendor_app',
-			      chunks: 'all',
-			      minChunks: 2
-			    }
-			  }
+				cacheGroups: {
+					default: false,
+					commons: {
+						test: /[\\/]node_modules[\\/]/,
+						name: 'vendor_app',
+						chunks: 'all',
+						minChunks: 2
+					}
+				}
 			}
 			},
-		}),
-				merge(common[1](env), {
+		}
+	),
+	merge(common[1](env), {
 					mode: 'production',
 					devtool: 'source-map',
 					stats: {
@@ -96,6 +97,6 @@ module.exports = env => {
 					}
 					},
 				}
-)
-]
+	)
+	]
 };

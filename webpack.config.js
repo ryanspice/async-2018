@@ -23,7 +23,9 @@ let build = env => {
 
 	const bundle = {
 		mode:'development',
-		entry: './src/index.js',
+		entry:{
+			es: './src/index.js'
+		},
 
 		devtool: 'eval-source-maps',
 		output: {
@@ -167,26 +169,18 @@ let build = env => {
 let processA = evt => {
 	let temp = build(evt);
 	temp.output.filename = "async-template.js";
-	temp.output.library = "async-template";
+	temp.output.library = "async-template-library";
 	return temp;
 }
-/*
-if (env)
-if (env.NODE_ENV === "production"){
-*/
-	let processB = evt => {
-		evt.NODE_ENV = 'legacy';
-		let temp = build(evt);
-		temp.output.library = "async-template-library";
-		return temp;
-	}
-	module.exports = [
-		processA,
-		processB
-	]
-/*
-} else {
-	module.exports = processA;
-	*/
 
-//}
+let processB = evt => {
+	evt.NODE_ENV = 'legacy';
+	let temp = build(evt);
+	temp.output.library = "async-template-legacy-library";
+	return temp;
+}
+
+module.exports = [
+	processA,
+	processB
+];
