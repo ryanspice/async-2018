@@ -1,6 +1,6 @@
 //@flow
 
-import type {Element} from "./interfaces";
+//import type {Element} from "./interfaces";
 
 import {default as loop} from './loop';
 
