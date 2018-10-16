@@ -8,7 +8,6 @@ import data from '../../no_template.data';
 
 Object.prototype.insertAfter = function (newNode) { this.parentNode.insertBefore(newNode, this.nextSibling); }
 
-
 let trace:string = 0;
 
 /*

@@ -1,11 +1,11 @@
 //@flow
 
-console.log(require('./dist/async-template'))
+//ES6 Module
 
-console.log(window['async-template-library'])
+import * as Async2018 from "./dist";
 
-console.log(require('./dist/async-template.legacy'))
+window['async-template-library'] = window['async-template-library'].default.core.template.AsyncRenderPipe;
 
-export default window['async-template-library'].default.core.template.AsyncRenderPipe;
+//ES5 Export
 
-//export default require('./dist/async-template').default.core.template.AsyncRenderPipe;
+export default require('./dist/async-template.legacy').default.core.template.AsyncRenderPipe;
