@@ -4,6 +4,7 @@ const log = require('loglevel');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 log.setLevel('info');
 
@@ -125,7 +126,23 @@ let build = env => {
 			child_process: 'empty'
 		},
 		plugins:[
+			new FriendlyErrorsWebpackPlugin({
+			  compilationSuccessInfo: {
+			    messages: ['You application is running here http://localhost:8080'],
+			    notes: ['Here be Dragons']
+			  },
+			  onErrors: function (severity, errors) {
+			    // You can listen to errors transformed and prioritized by the plugin
+			    // severity can be 'error' or 'warning'
+			  },
+			  // should the console be cleared between each compilation?
+			  // default is true
+			  clearConsole: false,
 
+			  // add formatters and transformers (see below)
+			  additionalFormatters: [],
+			  additionalTransformers: []
+			}),
 			new MiniCssExtractPlugin({
 
 				filename: "[name].css",
@@ -139,7 +156,12 @@ let build = env => {
 		        //{ from: './src/assets', to:'./assets/' }
 		    ]),
 			new webpack.NamedModulesPlugin(),
-			new webpack.optimize.OccurrenceOrderPlugin(true)
+			new webpack.optimize.OccurrenceOrderPlugin(true),
+			new webpack.DefinePlugin({
+				'process.env': {
+					NODE_ENV: JSON.stringify('production')
+				},
+			})
 		],
 		devServer: {
 			contentBase: './dist',
