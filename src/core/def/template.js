@@ -1,5 +1,7 @@
 //@flow
 
+const log = require('loglevel');
+
 //import type {Element} from "./interfaces";
 
 import {default as loop} from './loop';
@@ -30,12 +32,14 @@ export class AsyncRenderPipe {
 
 	props:Array<string> = [
 		'id',
+		'ref',
 		'value',
 		'class',
 		'className',
-		'onclick',
 		'click',
+		'onclick',
 		'onresize',
+		'oninput',
 		'activity',
 		`innerHTML`
 	];
@@ -93,13 +97,14 @@ export class AsyncRenderPipe {
 
 		this.context = document;//await evt.currentTarget;
 
-		await this.iterateTemplate(this.template[0]);//this.template[0])
+		await this.iterateTemplate();//this.template[0]);//this.template[0])
 
 	}
 
 	/*
 		Create or renderTo
 	*/
+
 	scrollcount = 0;
 
 	check = async (evt:any)=>{
@@ -214,6 +219,10 @@ export class AsyncRenderPipe {
 
 		const renderTo = await this.createRenderTarget(template);
 
+		console.log(template.type)
+		if (!template.type)
+			log.warn('Async.2018 tried to render an `undefined` element');
+
 		elm = (await document.createElement(template.type):HTML5Element);
 		elm.afterConstruct = template.afterConstruct;
 		switch(type){
@@ -253,8 +262,10 @@ export class AsyncRenderPipe {
 				elm.style = template.style;
 				elm.value = template.value;
 				elm.renderTo = renderTo; //await createRenderTarget(template);
-
+				//console.log('eh')
 		}
+		elm.ref = template.ref;
+		elm.oninput = template.oninput;
 
 		//Defer template item
 
@@ -305,11 +316,13 @@ export class AsyncRenderPipe {
 		iterate template data and generate html
 	*/
 
-	async iterateTemplate(tpl:any){
+	async iterateTemplate(tpl:any = null){
+
+		log.info('iterateTemplate00', this.template)
 
 		if (trace){
 
-			//console.warn(`renderer::`+trace);
+			log.warn(`renderer::`+trace);
 
 			return;
 		}
@@ -326,6 +339,19 @@ export class AsyncRenderPipe {
 		await loop(this.template,this.check);
 
 		this.elms = this.defer;
+
+		if ((this.defer = this.elms.filter(elm=>elm?elm.ref:null)).length>0){
+
+			// /this.defer = this.elms.filter(elm=>elm?elm.ref:null);
+
+			trace--;
+
+			this.template = [this.defer];
+			this.elms = [];
+
+			this.iterateTemplate();
+
+		}
 
 	}
 
