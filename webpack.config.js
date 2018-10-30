@@ -151,7 +151,7 @@ let build = env => {
 
 			}),
 			new CopyWebpackPlugin([
-		        { from: './src/index-dist.js',
+		        { from: './src/core/def/index-dist.js',
 					 		to: './index.js'},
 		        //{ from: './src/assets', to:'./assets/' }
 		    ]),

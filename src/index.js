@@ -1,10 +1,8 @@
 //@flow
 
-//import ready from './ready';
+import ready from './ready';
 
-//console.log( ready);
-
-import core from './core/index';
+import core from './core';
 
 export default {
 

@@ -4,7 +4,7 @@ const state:number = 0;
 
 const START = 1;
 const END = 0;
-const document = document;
+//const document = document;
 
 interface TemplateDefinitions {
 	reference:Function;
@@ -28,9 +28,10 @@ ready({
 
 export default async function(def:TemplateDefinitions) {
 
-	const define
+	//const define;
 
-	return await function(evt) {
+	
+	return async function(evt) {
 
 		const context:HTMLDocument = document;
 
@@ -53,5 +54,6 @@ export default async function(def:TemplateDefinitions) {
 		}
 
 	}
+
 
 }

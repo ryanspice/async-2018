@@ -1,13 +1,14 @@
-//@flow
-
-const log = require('loglevel');
-const context = document;
+//@flow 
 
 import {default as loop} from './loop';
 
-import data from '../../no_template.data';
+import log from 'loglevel';
+import data from '../template/empty.data';
 
-let trace:string = 0;
+
+const context:Document = document;
+
+let trace:number = 0;
 
 /*
 	AsyncRenderPipe
@@ -17,7 +18,7 @@ let trace:string = 0;
 
 export class AsyncRenderer {
 
-	context:HTMLDocument = context;
+	context:Document = context;
 	template:Array<any> = data;
 
 	defer:Array<any> = [];
