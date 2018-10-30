@@ -185,48 +185,36 @@ export class AsyncRenderPipe {
 	}
 
 	/*
-
-	*/
-
-	createTemplateItem = async (item:any) => {
-
-		let template = item.value;
-
-		let element = await this.createElementOfType(template);
-		if (element!=false){
-
-			this.elms[item.id] = (this.elements[item.id]) = element;
-			//console.log(item.id, element)
-			element.template = item.id;
-
-		} else {
-
-			// if debugger warning true :: console.log('false')
-
-		}
-
-	}
-
-	/*
 		Create a DOM element in memory
 	*/
 
 	async createElementOfType(template:TemplateElement):Element {
 
-		let elm:HTML5Element;
+		const type:string|null = template.type;
 
-		const type:string = template.type;
+		if (!type){
 
-		const renderTo = await this.createRenderTarget(template);
-
-		console.log(template.type)
-		if (!template.type)
 			log.warn('Async.2018 tried to render an `undefined` element');
 
-		elm = (await document.createElement(template.type):HTML5Element);
-		elm.afterConstruct = template.afterConstruct;
+		}
 
-		
+		const target:Element|null = await this.createRenderTarget(template);
+
+		if (!target){
+
+			log.warn('Async.2018 cannot find a target to render to');
+
+		}
+
+		const elm:HTML5Element = (await document.createElement(template.type):HTML5Element);
+
+		if (!elm){
+
+			log.warn('Async.2018 could not create element', template);
+
+		}
+
+		elm.afterConstruct = template.afterConstruct;
 
 		switch(type){
 
@@ -272,14 +260,15 @@ export class AsyncRenderPipe {
 
 				elm.style = template.style;
 				elm.value = template.value;
-				elm.renderTo = renderTo;
+				elm.renderTo = target;
+
 		}
 		elm.ref = template.ref;
 		elm.oninput = template.oninput;
 
 		//Defer template item
 
-		if (Number(renderTo)===2430){
+		if (Number(target)===2430){
 
 			await this.defer.push(template);
 
@@ -291,17 +280,14 @@ export class AsyncRenderPipe {
 		await this.populateProps(this.props,template,elm);
 
 		//EVENT HOOK: afterConstruct
-
-		if (elm.afterConstruct){
-
-			await elm.afterConstruct();
-
-		}
+		this.afterConstruct(elm);
 
 		return elm;
 	}
 
-	/* */
+	/*
+		populate data props on elements
+	*/
 
 	async populateProps(props, template, elm){
 
@@ -313,7 +299,6 @@ export class AsyncRenderPipe {
 		}
 
 	}
-
 
 	/*
 		iterate template data and generate html
@@ -348,6 +333,7 @@ export class AsyncRenderPipe {
 			trace--;
 
 			this.template = await [this.defer];
+			this.defer = [];
 			this.elms = await [];
 
 			await this.iterateTemplate();
@@ -355,6 +341,38 @@ export class AsyncRenderPipe {
 		}
 
 		return true;
+	}
+
+	/*
+
+	*/
+
+	createTemplateItem = async (item:TemplateScheme) => {
+
+		let element;
+
+		if ((element=await this.createElementOfType(item.value))){
+
+			this.elms[item.id] = (this.elements[item.id]) = element;
+
+			element.template = item.id;
+
+		} else {
+
+			// if debugger warning true :: console.log('false')
+
+		}
+
+	}
+
+	/*
+		HOOKS
+	*/
+
+	afterConstruct(elm){
+
+		elm.afterConstruct?elm.afterConstruct():null;
+
 	}
 
 }
