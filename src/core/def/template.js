@@ -211,7 +211,7 @@ export class AsyncRenderPipe {
 		Create a DOM element in memory
 	*/
 
-	async createElementOfType(template:TemplateElement){
+	async createElementOfType(template:TemplateElement):Element {
 
 		let elm:HTML5Element;
 
@@ -225,6 +225,9 @@ export class AsyncRenderPipe {
 
 		elm = (await document.createElement(template.type):HTML5Element);
 		elm.afterConstruct = template.afterConstruct;
+
+		
+
 		switch(type){
 
 			case "style":
@@ -250,49 +253,49 @@ export class AsyncRenderPipe {
 					*/
 
 					elm.onclick = (evt) => {
+
 						evt.stopPropagation();
+
 						if (typeof template.onclick == 'function'){
-							template.onclick();}
-							else{
-						eval(template.onclick);}
+
+							template.onclick();
+
+						}	else {
+
+							eval(template.onclick);
+
+						}
+
 					};
 
 				}
 
 				elm.style = template.style;
 				elm.value = template.value;
-				elm.renderTo = renderTo; //await createRenderTarget(template);
-				//console.log('eh')
+				elm.renderTo = renderTo;
 		}
 		elm.ref = template.ref;
 		elm.oninput = template.oninput;
 
 		//Defer template item
 
-		if (renderTo=='2430'){
+		if (Number(renderTo)===2430){
 
-			this.defer.push(template);
+			await this.defer.push(template);
 
 			return false;
 		}
 
 		//Populate Props
-		/*
-			if (templatePicks)
-			for(let prop in templatePicks){
 
-				if (template[templatePicks[prop]])
-					elm[templatePicks[prop]] = template[templatePicks[prop]];
+		await this.populateProps(this.props,template,elm);
 
-			}
-		*/
-
-		//Populate Props
-		if (this.props)
-			await this.populateProps(this.props,template,elm);
+		//EVENT HOOK: afterConstruct
 
 		if (elm.afterConstruct){
-			elm.afterConstruct();
+
+			await elm.afterConstruct();
+
 		}
 
 		return elm;
@@ -316,15 +319,15 @@ export class AsyncRenderPipe {
 		iterate template data and generate html
 	*/
 
-	async iterateTemplate(tpl:any = null){
+	async iterateTemplate():boolean {
 
-		log.info('iterateTemplate00', this.template)
+		log.info('iterateTemplate'+trace, this.template);
 
 		if (trace){
 
 			log.warn(`renderer::`+trace);
 
-			return;
+			return false;
 		}
 
 		trace++;
@@ -332,7 +335,7 @@ export class AsyncRenderPipe {
 		await loop(this.template,this.createTemplateItem);
 		await loop(this.template,this.check);
 
-		this.elms = this.defer;
+		this.elms = await this.defer;
 
 		//TODO: recursive
 		await loop([this.defer],this.createTemplateItem);
@@ -340,19 +343,18 @@ export class AsyncRenderPipe {
 
 		this.elms = this.defer;
 
-		if ((this.defer = this.elms.filter(elm=>elm?elm.ref:null)).length>0){
-
-			// /this.defer = this.elms.filter(elm=>elm?elm.ref:null);
+		if ((this.defer = await this.elms.filter(elm=>elm?elm.ref:null)).length>0){
 
 			trace--;
 
-			this.template = [this.defer];
-			this.elms = [];
+			this.template = await [this.defer];
+			this.elms = await [];
 
-			this.iterateTemplate();
+			await this.iterateTemplate();
 
 		}
 
+		return true;
 	}
 
 }
