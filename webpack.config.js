@@ -5,6 +5,7 @@ const log = require('loglevel');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
 log.setLevel('info');
 
@@ -12,38 +13,38 @@ let build = env => {
 
 
 	if (!env)
-		env = {NODE_ENV:"development",production:"false"};
+		env = { NODE_ENV: "development", production: "false" };
 
 	const type = env.NODE_ENV;
 
-	if (type=="production"){
+	if (type == "production") {
 		env.production = true;
 	}
 
 	log.info('NODE_ENV: ', type);
 
 	const bundle = {
-		mode:'development',
-		entry:{
+		mode: 'development',
+		entry: {
 			es: './src/index.js'
 		},
 
 		devtool: 'eval-source-maps',
 		output: {
-			filename: type!="legacy"?"async-template.js":"async-template.legacy.js",
+			filename: type != "legacy" ? "async-template.js" : "async-template.legacy.js",
 			chunkFilename: '[name].bundle.js',
 			path: path.resolve(__dirname, 'dist'),
-    	jsonpFunction: 'webpackJsonp' + Date.now(),
-	    library: 'async.2018',
-	    libraryTarget: 'umd',
-	    umdNamedDefine: true
+			jsonpFunction: 'webpackJsonp' + Date.now(),
+			library: 'async.2018',
+			libraryTarget: 'umd',
+			umdNamedDefine: true
 		},
 		resolve: {
 			extensions: ['.js', '.scss', '.css'],
 			plugins: [],
 			modules: [
-			 './src',
-			 'node_modules'
+				'./src',
+				'node_modules'
 			]
 		},
 		module: {
@@ -52,23 +53,23 @@ let build = env => {
 					test: /\.js$/,
 					exclude: /node_modules/,
 					use: {
-					  loader: "babel-loader",
-						options:{
-							"presets":[
+						loader: "babel-loader",
+						options: {
+							"presets": [
 								"@babel/preset-flow",
 								[
 									"@babel/preset-env",
 									{
 										"modules": false,
 										"useBuiltIns": false,
-										"shippedProposals":true,
+										"shippedProposals": true,
 										"targets": {
-											"browsers": type!="legacy"?"cover 20% in CA":"cover 97% in CA"
+											"browsers": type != "legacy" ? "cover 20% in CA" : "cover 97% in CA"
 										},
 										"loose": true
 									}
 								]],
-							"plugins":[
+							"plugins": [
 								["@babel/plugin-proposal-decorators", {
 									"legacy": true
 								}],
@@ -91,26 +92,26 @@ let build = env => {
 					include: [path.resolve('src'), path.resolve('test'), path.resolve('node_modules/webpack-dev-server/client')]
 				},
 				{
-				  test: /bootstrap\.native/,
-				  use: {
-				    loader: 'bootstrap.native-loader'
-				  }
+					test: /bootstrap\.native/,
+					use: {
+						loader: 'bootstrap.native-loader'
+					}
 				},
 				{
-	          test: /\.scss$/,
-	          use: [{
-	              loader: "style-loader" // creates style nodes from JS strings
-	          }, {
-	              loader: "css-loader" // translates CSS into CommonJS
-								,options:{url:false}
-	          }, {
-	              loader: "sass-loader" // compiles Sass to CSS
-	          }]
-	      },
-        {
-            test: /\.(eot|svg|ttf|woff|woff2)$/,
-            use:[{loader: 'file?name=public/fonts/[name].[ext]'}]
-        }
+					test: /\.scss$/,
+					use: [{
+						loader: "style-loader" // creates style nodes from JS strings
+					}, {
+						loader: "css-loader" // translates CSS into CommonJS
+						, options: { url: false }
+					}, {
+						loader: "sass-loader" // compiles Sass to CSS
+					}]
+				},
+				{
+					test: /\.(eot|svg|ttf|woff|woff2)$/,
+					use: [{ loader: 'file?name=public/fonts/[name].[ext]' }]
+				}
 			]
 		},
 		node: {
@@ -125,23 +126,23 @@ let build = env => {
 			tls: 'empty',
 			child_process: 'empty'
 		},
-		plugins:[
+		plugins: [
 			new FriendlyErrorsWebpackPlugin({
-			  compilationSuccessInfo: {
-			    messages: ['You application is running here http://localhost:8080'],
-			    notes: ['Here be Dragons']
-			  },
-			  onErrors: function (severity, errors) {
-			    // You can listen to errors transformed and prioritized by the plugin
-			    // severity can be 'error' or 'warning'
-			  },
-			  // should the console be cleared between each compilation?
-			  // default is true
-			  clearConsole: false,
+				compilationSuccessInfo: {
+					messages: ['You application is running here http://localhost:8080'],
+					notes: ['Here be Dragons']
+				},
+				onErrors: function (severity, errors) {
+					// You can listen to errors transformed and prioritized by the plugin
+					// severity can be 'error' or 'warning'
+				},
+				// should the console be cleared between each compilation?
+				// default is true
+				clearConsole: false,
 
-			  // add formatters and transformers (see below)
-			  additionalFormatters: [],
-			  additionalTransformers: []
+				// add formatters and transformers (see below)
+				additionalFormatters: [],
+				additionalTransformers: []
 			}),
 			new MiniCssExtractPlugin({
 
@@ -151,10 +152,12 @@ let build = env => {
 
 			}),
 			new CopyWebpackPlugin([
-		        { from: './src/core/def/index-dist.js',
-					 		to: './index.js'},
-		        //{ from: './src/assets', to:'./assets/' }
-		    ]),
+				{
+					from: './src/core/def/index-dist.js',
+					to: './index.js'
+				},
+				//{ from: './src/assets', to:'./assets/' }
+			]),
 			new webpack.NamedModulesPlugin(),
 			new webpack.optimize.OccurrenceOrderPlugin(true),
 			new webpack.DefinePlugin({
@@ -162,6 +165,7 @@ let build = env => {
 					NODE_ENV: JSON.stringify('production')
 				},
 			})
+
 		],
 		devServer: {
 			contentBase: './dist',
@@ -185,11 +189,14 @@ let build = env => {
 		}
 	}
 
+	 type != "legacy" ?bundle.plugins.push(new DashboardPlugin()):null;
+
 	return bundle
 };
 
 let processA = evt => {
 	let temp = build(evt);
+
 	temp.output.filename = "async-template.js";
 	temp.output.library = "async-template-library";
 	return temp;

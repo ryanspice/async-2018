@@ -22,25 +22,25 @@ declare module "../node_modules/loglevel" {
 
 interface Document extends Document {
 
-	onreadystatechange:Function;
-	state:number;
+	onreadystatechange: Function;
+	state: number;
 
 }
 
 interface Storage extends Storage {
 
-	setObject:Function;
-	getObject:Function;
+	setObject: Function;
+	getObject: Function;
 
 }
 
 interface AsyncPipes {
 
-	requireCSS:Function;
-	requireHTML:Function;
-	requireIcons:Function;
-	requireListeners:Function;
-	requireMSG:Function;
+	requireCSS: Function;
+	requireHTML: Function;
+	requireIcons: Function;
+	requireListeners: Function;
+	requireMSG: Function;
 
 
 }
@@ -53,55 +53,60 @@ interface AsyncPipes {
 
 interface TemplateElement {
 
-  type: string;
-  value: string;
+	type: string;
+	value: string;
+	ref: string;
 
-  renderTo?: string;
-  class?: string;
-  style?: string;
+	renderTo?: string;
+	class?: string;
+	style?: string;
 
+	afterConstruct?: Function;
+
+	onclick?: Function;
+	oninput?: Function;
 }
 
 interface TemplateItem {
 
-	id:string;
-	value:TemplateElement;
+	id: number;
+	value: TemplateElement;
 
 }
 
 interface TemplateScheme {
 
-	id:string;
-	value:TemplateItem;
+	id: string;
+	value: TemplateItem;
 
 }
 
 export interface HTML5Element extends HTMLElement {
 
 
-	  class?: string;
-	  style?: CSSStyleDeclaration;
-		value?:string;
-		renderTo?:any;
+	style: CSSStyleDeclaration;
+	class?: string;
+	value?: string;
+	renderTo?: any;
 }
 
 
 export interface ViewSchema {
 
-	type:string;
+	type: string;
 
-	id:string;
-	style?:string;
+	id: string;
+	style?: string;
 
-	link?:HTML5Element;
+	link?: HTML5Element;
 
-	ref?:HTML5Element;
+	ref?: HTML5Element;
 
-	className:string;
-	innerHTML:string;
+	className: string;
+	innerHTML: string;
 
-	onclick?:any;
+	onclick?: any;
 
 }
 
-export type Element = HTML5Element|null;
+export type Element = HTML5Element | null;

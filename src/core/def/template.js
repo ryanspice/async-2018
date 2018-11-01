@@ -1,12 +1,9 @@
-//@flow 
+//@flow
 
 import {default as loop} from './loop';
 
 import log from 'loglevel';
 import data from '../template/empty.data';
-
-
-const context:Document = document;
 
 let trace:number = 0;
 
@@ -18,7 +15,7 @@ let trace:number = 0;
 
 export class AsyncRenderer {
 
-	context:Document = context;
+	context:Document = document;
 	template:Array<any> = data;
 
 	defer:Array<any> = [];
@@ -43,33 +40,49 @@ export class AsyncRenderer {
 		`innerHTML`
 	];
 
+	/* 
 
-	constructor(template, pre=()=>{}, post=()=>{}){
+	*/
+
+	constructor(template:TemplateScheme, pre:Function=()=>{}, post:Function=()=>{}){
+
+		const ors = document.onreadystatechange;
 
 		this.context.state = 0;
-		let ors = document.onreadystatechange;
 
 		if (document.readyState === "complete") {
 
-			if(ors)
+			if(ors){
+			
 				ors();
+			
+			}
+
 			pre();
+
 			post();
+
 			this.template[0] = template;
+
 			this.init();
+
 			return;
 		}
 
-		this.context.onreadystatechange = async (evt:Event)=>{
+		this.context.onreadystatechange = async (evt:Event) => {
 
-			if (ors)
+			if (ors){
+
 				ors();
+			
+			}
 
 			switch(this.context.state){
 
 				case 0:
 
 					pre();
+
 					this.context.state++;
 
 				break;
@@ -77,9 +90,11 @@ export class AsyncRenderer {
 				case 1:
 
 					post();
+
 					this.context.state++;
 
 					this.template[0] = template;
+
 					this.init();
 
 				break;
@@ -87,11 +102,14 @@ export class AsyncRenderer {
 
 		};
 
+		return;
 	}
 
-	/* async init */
+	/* 
 
-	async init():boolean {
+	*/
+
+	async init():Promise<boolean> {
 
 		this.context = document;
 
@@ -102,7 +120,7 @@ export class AsyncRenderer {
 		iterate template data and generate html
 	*/
 
-	async iterateTemplate():boolean {
+	async iterateTemplate():Promise<boolean> {
 
 		log.info('iterateTemplate'+trace, this.template);
 
@@ -145,30 +163,24 @@ export class AsyncRenderer {
 		Create a DOM element in memory
 	*/
 
-	async createElementOfType(template:TemplateElement):Element {
+	async createElementOfType(template:TemplateElement):Promise<Element|false> {
 
 		const type:string|null = template.type;
 
 		if (!type){
-
 			log.warn('Async.2018 tried to render an `undefined` element');
-
 		}
 
 		const target:Element|null = await this.createRenderTarget(template);
 
 		if (!target){
-
 			log.warn('Async.2018 cannot find a target to render to');
-
 		}
 
 		const elm:HTML5Element = (await this.context.createElement(template.type):HTML5Element);
 
 		if (!elm){
-
 			log.warn('Async.2018 could not create element', template);
-
 		}
 
 		elm.afterConstruct = template.afterConstruct;
@@ -237,7 +249,7 @@ export class AsyncRenderer {
 		generate a reference to the target element, or body if none
 	*/
 
-	async createRenderTarget(template:TemplateElement):Element|string {
+	async createRenderTarget(template:TemplateElement):Promise<Element|string> {
 
 		//Verify if rendering target exists
 		if (template.renderTo!=undefined)
@@ -255,7 +267,7 @@ export class AsyncRenderer {
 		populate data props on elements
 	*/
 
-	async populateProps(props:Array<string>, template:TemplateElement, elm:any){
+	async populateProps(props:Array<string>, template:TemplateElement, elm:any):void {
 
 		for(let prop in props){
 
@@ -274,7 +286,7 @@ export class AsyncRenderer {
 
 	*/
 
-	createTemplateItem = async (item:TemplateScheme) => {
+	createTemplateItem = async (item:TemplateElement) => {
 
 		let element;
 
@@ -306,7 +318,8 @@ export class AsyncRenderer {
 
 				case "string":
 
-					elm = this.elms[evt.id] = await this.createElementOfType(this.elms[evt.id]);
+					let a = this.elms[evt.id];
+					elm = this.elms[evt.id] = await this.createElementOfType(a);
 
 				break;
 			}
@@ -359,7 +372,7 @@ export class AsyncRenderer {
 		HOOKS
 	*/
 
-	afterConstruct(elm){
+	afterConstruct(elm:TemplateElement){
 
 		elm.afterConstruct?elm.afterConstruct():null;
 
