@@ -1,15 +1,25 @@
 //@flow
 
-import type {Element} from "./interfaces";
-
 import {default as loop} from './loop';
 
-import data from '../../no_template.data';
+import log from 'loglevel';
+import data from '../template/empty.data';
 
-Object.prototype.insertAfter = function (newNode) { this.parentNode.insertBefore(newNode, this.nextSibling); }
+let trace:number = 0;
 
-
-let trace:string = 0;
+const _props:Array<string> = [
+	'id',
+	'ref',
+	'value',
+	'class',
+	'className',
+	'click',
+	'onclick',
+	'onresize',
+	'oninput',
+	'activity',
+	`innerHTML`
+];
 
 /*
 	AsyncRenderPipe
@@ -17,58 +27,59 @@ let trace:string = 0;
 		will render to evt.currentTarget
 */
 
-export class AsyncRenderPipe {
+export class AsyncRenderer {
+	
+	context:Document = document;
 
-	context:HTMLDocument = document;
 	template:Array<any> = data;
-
-	defer:Array<any> = [];
+	props:Array<string> = _props;
 
 	elms:Array<any> = [];
+	defer:Array<any> = [];
 	elements:Array<any> = [];
 
 	trace:number = 0;
+	scrollcount:number = 0;
 
-	props:Array<string> = [
-		'id',
-		'value',
-		'class',
-		'className',
-		'onclick',
-		'click',
-		'onresize',
-		'activity',
-		`innerHTML`
-	];
+	constructor(template:TemplateScheme, pre:Function=()=>{}, post:Function=()=>{}){
 
-	onComplete:Function = () => {};
-
-	constructor(template, pre=()=>{}, post=()=>{}){
+		const ors = this.context.onreadystatechange;
 
 		this.context.state = 0;
-		let ors = document.onreadystatechange;
 
-		if (document.readyState === "complete") {
+		if (this.context.readyState === "complete") {
 
-			if(ors)
+			if(ors){
+			
 				ors();
+			
+			}
+
 			pre();
+
 			post();
+
 			this.template[0] = template;
+
 			this.init();
+
 			return;
 		}
 
-		this.context.onreadystatechange = async (evt:Event)=>{
+		this.context.onreadystatechange = async (evt:Event) => {
 
-			if (ors)
+			if (ors){
+
 				ors();
+			
+			}
 
 			switch(this.context.state){
 
 				case 0:
 
 					pre();
+
 					this.context.state++;
 
 				break;
@@ -76,9 +87,11 @@ export class AsyncRenderPipe {
 				case 1:
 
 					post();
+
 					this.context.state++;
 
 					this.template[0] = template;
+
 					this.init();
 
 				break;
@@ -86,94 +99,160 @@ export class AsyncRenderPipe {
 
 		};
 
+		return;
 	}
 
-	/* async init */
+	/* 
 
-	async init(){
+	*/
 
-		this.context = document;//await evt.currentTarget;
+	async init(): Promise<boolean> {
 
-		await this.iterateTemplate(this.template[0]);//this.template[0])
+		this.context = document;
 
+		return await this.iterateTemplate();
 	}
 
 	/*
-		Create or renderTo
+		Iterate template data and generate html
 	*/
-	scrollcount = 0;
 
-	check = async (evt:any)=>{
+	async iterateTemplate(): Promise<boolean> {
 
-		let elm = this.elms[evt.id];
+		log.info('iterateTemplate' + trace, this.template);
 
-		if ((elm)&&(elm.renderTo)) {
+		if (trace) {
 
-			switch(typeof elm.renderTo){
+			log.warn(`renderer::` + trace);
 
-				case "string":
+			return false;
+		}
 
-					elm = this.elms[evt.id] = await this.createElementOfType(this.elms[evt.id]);
+		trace++;
+
+		await loop(this.template, this.createTemplateItem);
+		await loop(this.template, this.check);
+
+		this.elms = await this.defer;
+
+		//TODO: recursive
+		await loop([this.defer], this.createTemplateItem);
+		await loop(this.template, this.check);
+
+		this.elms = this.defer;
+
+		if ((this.defer = await this.elms.filter(elm => elm ? elm.ref : null)).length > 0) {
+
+			trace--;
+
+			this.template = await [this.defer];
+			this.defer = [];
+			this.elms = await [];
+
+			return await this.iterateTemplate();
+
+		}
+
+		return true;
+	}
+
+	/*
+		Create a DOM element in memory
+	*/
+
+	async createElementOfType(template: TemplateElement): Promise<any> {
+
+		const type: string | null = template.type;
+
+		if (!type) {
+			log.warn('Async.2018 tried to render an `undefined` element');
+		}
+
+		const target: Element | string = await this.createRenderTarget(template);
+
+		if (!target) {
+			log.warn('Async.2018 cannot find a target to render to');
+		}
+
+		const elm: HTML5Element = (await this.context.createElement(template.type): HTML5Element);
+
+		if (!elm) {
+			log.warn('Async.2018 could not create element', template);
+		}
+
+		elm.ref = template.ref;
+		elm.afterConstruct = template.afterConstruct;
+
+		switch (type) {
+
+			case "style":
+
+				elm.innerHTML = template.value;
+				elm.renderTo = await this.context.head;
 
 				break;
-			}
 
-			this.scrollcount++;
+			default:
 
-			if (elm.renderTo.id=='scroll') {
+				elm.oninput = template.oninput;
 
+				if (template.onclick) {
 
-				//FIRST APPEND
-				//console.log(elm.id)
-				if (elm.renderTo.children.length==0){
+					elm.onclick = (evt) => {
 
-					elm.renderTo.appendChild(elm, null);
+						evt.stopPropagation();
 
-					return;
+						if (typeof template.onclick == 'function') {
+
+							template.onclick();
+
+						} else {
+
+							eval(template.onclick);
+
+						}
+
+					};
+
 				}
 
-
-				elm.renderTo.appendBefore = (element, t)=> {
-				    element.parentNode.insertBefore(t, element);
-				};
-
-				elm.renderTo.appendAfter = (element, t)=> {
-				    element.parentNode.insertBefore(t, element.nextSibling);
-				};
-
-				//APPEND PLUS ( usually at end )
-
-				if (elm.id=="plus"){
-
-					elm.renderTo.appendBefore(elm.renderTo.children[0], elm);
-
-					return;
-				}
-
-
-				elm.renderTo.insertBefore(elm,elm.renderTo.children[0].nextSibling)
-
-
-			}	else this.elms[evt.id].renderTo.appendChild(this.elms[evt.id], null);
-
-			this.elms[evt.id] = null;
+				elm.style = template.style;
+				elm.value = template.value;
+				elm.renderTo = target;
 
 		}
 
+		//Defer template item
+
+		if (target === '2430') {
+
+			await this.defer.push(template);
+
+			return false;
+		}
+
+		//Populate Props
+
+		await this.populateProps(this.props, template, elm);
+
+		//EVENT HOOK: afterConstruct
+		this.afterConstruct(elm);
+
+		return elm;
 	}
 
 	/*
-		generate a reference to the target element, or body if none
+		Generate a reference to the target element, or body if none
 	*/
 
-	async createRenderTarget(template:TemplateElement){
+	async createRenderTarget(template: TemplateElement): Promise<Element | string> {
 
 		//Verify if rendering target exists
-		if (template.renderTo!=undefined)
-			if (this.context.querySelectorAll(template.renderTo)[0] == undefined){
+		if (template.renderTo != undefined)
+			if (this.context.querySelectorAll(template.renderTo)[0] == undefined) {
 
-			return '2430';
-		}
+				return '2430';
+			}
 
 		//Return querySelected element, fallback on body
 		//		if (template.renderTo!=undefined)
@@ -181,157 +260,130 @@ export class AsyncRenderPipe {
 	}
 
 	/*
-
+		Populate data props on elements
 	*/
 
-	createTemplateItem = async (item:any) => {
+	async populateProps(props: Array<string>, template: __layer, elm: __layer) {
 
-		let template = item.value;
+		for (let prop in (props: any)) {
 
-		let element = await this.createElementOfType(template);
-		if (element!=false){
+			const temp: string = props[(prop: any)];
+
+			if (template[temp]) {
+				elm[temp] = template[temp];
+			}
+
+		}
+
+	}
+
+	/*
+		Generate elements based on TemplateItem
+	*/
+
+	createTemplateItem = async (item: TemplateItem) => {
+
+		const element: TemplateElement = await this.createElementOfType(item.value);
+
+		if ((element)) {
 
 			this.elms[item.id] = (this.elements[item.id]) = element;
-			//console.log(item.id, element)
+
 			element.template = item.id;
 
 		} else {
 
-			// if debugger warning true :: console.log('false')
-
+			// if debugger warning true :: defered :: console.log('false')
+			//console.warn('aw',this);
 		}
 
 	}
 
 	/*
-		Create a DOM element in memory
+		VALIDATION
 	*/
 
-	async createElementOfType(template:TemplateElement){
+	check = async (temp: TemplateScheme) => {
 
-		let elm:HTML5Element;
+		const id: number = temp.id;
 
-		const type:string = template.type;
+		let elm: TemplateElement = this.elms[id];
 
-		const renderTo = await this.createRenderTarget(template);
+		if ((elm) && (elm.renderTo)) {
 
-		elm = (await document.createElement(template.type):HTML5Element);
-		elm.afterConstruct = template.afterConstruct;
-		switch(type){
+			switch (typeof elm.renderTo) {
 
-			case "style":
+				case "string":
 
-				elm.innerHTML = template.value;
-				elm.renderTo = await document.head;
+					let a = this.elms[id];
+					elm = this.elms[id] = await this.createElementOfType(a);
 
-			break;
+					break;
+			}
 
-			default:
+			this.scrollcount++;
 
-				if (template.onclick){
+			///NOT FOR PROD
 
-					/*
-					elm.removeEventListener('click');
-					elm.addEventListener('click',(evt)=>{
-						evt.stopPropagation();
-						if (typeof template.onclick == 'function'){
-							template.onclick();}
-							else{
-						eval(template.onclick);}
-					});
-					*/
+			if (elm.renderTo.id == 'scroll') {
 
-					elm.onclick = (evt) => {
-						evt.stopPropagation();
-						if (typeof template.onclick == 'function'){
-							template.onclick();}
-							else{
-						eval(template.onclick);}
-					};
+				if (elm.renderTo.children.length == 0) {
 
+					elm.renderTo.appendChild(elm, null);
+
+					return;
 				}
 
-				elm.style = template.style;
-				elm.value = template.value;
-				elm.renderTo = renderTo; //await createRenderTarget(template);
+				elm.renderTo.appendBefore = (element, t) => {
+					element.parentNode.insertBefore(t, element);
+				};
 
-		}
+				elm.renderTo.appendAfter = (element, t) => {
+					element.parentNode.insertBefore(t, element.nextSibling);
+				};
 
-		//Defer template item
+				//APPEND PLUS ( usually at end ) TAKEOUT
 
-		if (renderTo=='2430'){
+				if (elm.id == "plus") {
 
-			this.defer.push(template);
+					elm.renderTo.appendBefore(elm.renderTo.children[0], elm);
 
-			return false;
-		}
+					return;
+				}
 
-		//Populate Props
-		/*
-			if (templatePicks)
-			for(let prop in templatePicks){
 
-				if (template[templatePicks[prop]])
-					elm[templatePicks[prop]] = template[templatePicks[prop]];
+				elm.renderTo.insertBefore(elm, elm.renderTo.children[0].nextSibling)
 
-			}
-		*/
 
-		//Populate Props
-		if (this.props)
-			await this.populateProps(this.props,template,elm);
+			} else this.elms[id].renderTo.appendChild(this.elms[id], null);
 
-		if (elm.afterConstruct){
-			elm.afterConstruct();
-		}
+			//END NOT FOR PROD
 
-		return elm;
-	}
-
-	/* */
-
-	async populateProps(props, template, elm){
-
-		for(let prop in props){
-
-			if (template[props[prop]])
-				elm[props[prop]] = template[props[prop]];
+			this.elms[id] = null;
 
 		}
 
 	}
-
 
 	/*
-		iterate template data and generate html
+		HOOKS
 	*/
 
-	async iterateTemplate(tpl:any){
+	afterConstruct(elm: TemplateElement) {
 
-		if (trace){
-
-			//console.warn(`renderer::`+trace);
-
-			return;
-		}
-
-		trace++;
-
-		await loop(this.template,this.createTemplateItem);
-		await loop(this.template,this.check);
-
-		this.elms = this.defer;
-
-		//TODO: recursive
-		await loop([this.defer],this.createTemplateItem);
-		await loop(this.template,this.check);
-
-		this.elms = this.defer;
+		elm.afterConstruct ? elm.afterConstruct() : null;
 
 	}
+
+	/**/
+
+	onComplete: Function = () => { };
 
 }
 
+export class AsyncRenderPipe extends AsyncRenderer {
+
+}
 /*
 	Default Data Template
 */

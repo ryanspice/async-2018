@@ -1,7 +1,8 @@
-//@flow
 
-declare module "./dist/async-template" {
-  // This is where we'll list the module's exported interface(s)
-}
+//ES6 Module
+import  Async2018 from "./dist";
 
-export default require('./dist/async-template').default.core.template.AsyncRenderPipe;
+window['async-template-library'] = window['async-template-library'].default.core.template.AsyncRenderPipe;
+
+//ES5 Export
+export default require('./dist/async-template.legacy').default.core.template.AsyncRenderPipe;

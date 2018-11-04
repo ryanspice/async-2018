@@ -1,48 +1,73 @@
 //@flow
 
 /*
-
 	self contained, loop
-
 */
 
-let trace = 0;
+let _data:__data = [];
 
-let _data:Array<any>;
-let _length:number = 0;
-let _iterator:number = 0;
-let _iteratorId = null;
+let _loop_iterator: number;
 
-const _layer = async ():Promise<any> => {
+let _length: number = 0;
+let _iterator: number = 0;
+let _iteratorId: number = 0;
 
-	_data[_iterator] = {
-		id:_iterator,
-		value:_data[_iterator]
-	};
+let trace:number = 0;
+
+/**/
+
+let _action: Function = () => { };
+
+/**/
+
+const _dataMap: __dataMap = [];
+
+/**/
+
+class _template {
+	id:number;
+	value:Object;
+	constructor(id:number, value:Object){
+		this.id = id;
+		this.value = value;
+		return (this:__template);
+	}
+}
+
+/**/
+
+const _dataTemplate = async function(i:number, data:Object):__template {
+
+	return await (_dataMap[i] = await new _template(i,data));
+}
+
+/**/
+
+const _layer = async function():__layer {
+
+	_iteratorId++;
+	_data[_iterator] = await (_dataTemplate(_iterator, _data[_iterator]));
 
 	return _data[_iterator];
-};
+}
 
 /**/
 
-let _action = () => {};
+const _loop = async function(data:Array<__data>,action:Function) {
 
-/**/
+	if (_data===null){
 
-const _loop = async function(data:Array<any>,action:Function) {
+		_loop_iterator = _data.length = 0;
+		
+		for (_loop_iterator; _loop_iterator >= 0; _loop_iterator--){
 
-	if (_data==null){
-
-		_data = [];
-		for(let i = data.length;i>=0;i--){
-
-			_data[i] = null;
+			_data[_loop_iterator] = _dataTemplate(-1,{});
 
 		}
 
 	}
-
-	_data = data[0];
+	
+	_data = data[0]; 
 	_length = _data.length || 0;
 	_action = action;
 
