@@ -18,9 +18,8 @@ export class AsyncRenderer {
 	context:Document = document;
 	template:Array<any> = data;
 
-	defer:Array<any> = [];
-
 	elms:Array<any> = [];
+	defer:Array<any> = [];
 	elements:Array<any> = [];
 
 	trace:number = 0;
@@ -46,11 +45,11 @@ export class AsyncRenderer {
 
 	constructor(template:TemplateScheme, pre:Function=()=>{}, post:Function=()=>{}){
 
-		const ors = document.onreadystatechange;
+		const ors = this.context.onreadystatechange;
 
 		this.context.state = 0;
 
-		if (document.readyState === "complete") {
+		if (this.context.readyState === "complete") {
 
 			if(ors){
 			
@@ -267,14 +266,17 @@ export class AsyncRenderer {
 		populate data props on elements
 	*/
 
-	async populateProps(props:Array<string>, template:TemplateElement, elm:any):void {
+	async populateProps(props: Array<string>, template: __layer, elm:__layer) {
 
-		for(let prop in props){
+		props.forEach((prop:any)=> {
+			
+			const temp:string = props[prop];
 
-			if (template[props[prop]])
-				elm[props[prop]] = template[props[prop]];
-
-		}
+			if (template[temp]){
+				elm[temp] = template[temp];
+			}
+			
+		});
 
 	}
 
