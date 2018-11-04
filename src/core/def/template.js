@@ -268,16 +268,16 @@ export class AsyncRenderer {
 
 	async populateProps(props: Array<string>, template: __layer, elm:__layer) {
 
-		props.forEach((prop:any)=> {
-			
-			const temp:string = props[prop];
+		for (let prop in (props:any)) {
 
-			if (template[temp]){
+			const temp: string = props[(prop:any)];
+
+			if (template[temp]) {
 				elm[temp] = template[temp];
 			}
-			
-		});
 
+		}
+		
 	}
 
 	/**/
