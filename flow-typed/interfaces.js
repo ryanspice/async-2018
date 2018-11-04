@@ -125,4 +125,4 @@ export interface ViewSchema {
 
 }
 
-export type Element = HTML5Element | null;
+//aexport type Element = HTML5Element | null;
