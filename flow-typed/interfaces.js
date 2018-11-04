@@ -65,9 +65,10 @@ interface TemplateElement {
 	value: string;
 	ref: string;
 
-	renderTo?: string;
+	renderTo: HTML5Element;
 	class?: string;
 	style?: string;
+	template?: Number|string;
 
 	afterConstruct?: Function;
 
