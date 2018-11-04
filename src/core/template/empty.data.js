@@ -4,7 +4,7 @@
 	no_template :: fallback when no template applied
 */
 
-export default new Array([
+export default [
 	{
 		type:`section`,
 		style:`text-align:center;`,
@@ -12,4 +12,4 @@ export default new Array([
 			<p>No Template Loaded</p>
 		`
 	}
-]);
+];

@@ -1,17 +1,14 @@
 [ignore]
-
+.*/node_modules/*
 .*/dist/.*
 .*/build/.*
 .*/test/.*
 .*/config/.*
 .*/static/.*
-.*/node_modules/.*
 
 [libs]
-./flow-typed/
-.*/src/.*
-.*/flow-typed/.*
-
+.*/flow-typed/*
+.*/src/*
 
 [options]
 module.name_mapper='^src/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'

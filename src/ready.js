@@ -2,8 +2,8 @@
 
 const state:number = 0;
 
-const START = 1;
-const END = 0;
+const START:Number = 1;
+const END:Number = 0;
 //const document = document;
 
 interface TemplateDefinitions {
@@ -26,12 +26,9 @@ ready({
 */
 
 
-export default async function(def:TemplateDefinitions) {
+export default async function(def:TemplateDefinitions):Function {
 
-	//const define;
-
-	
-	return async function(evt) {
+	return async function(evt:Event) {
 
 		const context:HTMLDocument = document;
 
@@ -54,6 +51,5 @@ export default async function(def:TemplateDefinitions) {
 		}
 
 	}
-
 
 }

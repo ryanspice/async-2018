@@ -20,6 +20,7 @@ declare module "../node_modules/loglevel" {
 }
 
 
+
 interface Document extends Document {
 
 	onreadystatechange: Function;
@@ -47,6 +48,13 @@ interface AsyncPipes {
 
 
 
+interface TemplateDefinitions {
+	reference:Function;
+}
+
+interface TemplateReference {
+
+}
 
 
 
@@ -76,10 +84,17 @@ interface TemplateItem {
 
 interface TemplateScheme {
 
-	id: string;
+	id: number;
 	value: TemplateItem;
 
 }
+
+type __data = Array<Object>;
+type __dataMap = Array<TemplateScheme>;
+
+type __layer = Promise<Array<Object>>;
+type __template = Promise<TemplateScheme>;
+type __elements = Promise<TemplateElement>;
 
 export interface HTML5Element extends HTMLElement {
 
