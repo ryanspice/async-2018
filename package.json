@@ -1,9 +1,8 @@
 {
 	"name": "async.2018",
-	"version": "1.0.25",
+	"version": "1.0.26",
 	"description": "",
-	"private": true,
-	"author": "Ryan Tyler Spice-Finnie",
+	"author": "Ryan Tyler Spice-Finnie <spice.ryan@hotmail.com>",
 	"scripts": {
 		"dev": "yarn webpack --env.NODE_ENV=development",
 		"watch": "yarn dev --watch",
