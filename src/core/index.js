@@ -2,8 +2,8 @@
 
 import "./def/utils";
 
-import {data, AsyncRenderPipe} from "./def/template";
+import {data,pipe} from "./def/pipe";
 
 export default {
-	"template": {data,AsyncRenderPipe},
+	"template": {data,pipe},
 }
