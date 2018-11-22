@@ -3,7 +3,6 @@
 import { default as loop } from './loop';
 
 import log from 'loglevel';
-log.info('async.2018 :: ./core/def/pipe.js');
 
 import data from '../template/empty.data';
 
@@ -16,6 +15,9 @@ const _props: Array<string> = [
     'class',
     'className',
     'click',
+
+    'mounted',
+
     'onclick',
     'onresize',
     'oninput',
@@ -26,360 +28,459 @@ const _props: Array<string> = [
 
 class pipe {
 
-context:Document = document;
+    context:Document = document;
 
-template:Array<any> = data;
-props:Array<string> = _props;
+    template:Array<any> = data;
+    props:Array<string> = _props;
 
-elms:Array<any> = [];
-defer:Array<any> = [];
-elements:Array<any> = [];
+    elms:Array<any> = [];
+    defer:Array<any> = [];
+    elements:Array<any> = [];
 
-trace:number = 0;
-scrollcount:number = 0;
+    trace:number = 0;
+    scrollcount:number = 0;
 
-constructor(template: TemplateScheme, pre: Function = () => { }, post: Function = () => { }){
+    constructor(template: TemplateScheme, pre: Function = () => { }, post: Function = () => { }){
 
 
-    const ors = this.context.onreadystatechange;
+        const ors = this.context.onreadystatechange;
 
-    this.context.state = 0;
+        this.context.state = 0;
 
-    if (this.context.readyState === "complete") {
+        if (this.context.readyState === "complete") {
 
-        if (ors) {
+            if (ors) {
 
-            ors();
+                ors();
 
+            }
+
+            pre();
+
+            post();
+
+            this.template[0] = template;
+
+            this.init();
+
+            return;
         }
 
-        pre();
+        this.context.onreadystatechange = async (evt: Event) => {
 
-        post();
+            if (ors) {
 
-        this.template[0] = template;
+                ors();
 
-        this.init();
+            }
 
-        return;
-    }
+            switch (this.context.state) {
 
-    this.context.onreadystatechange = async (evt: Event) => {
+                case 0:
 
-        if (ors) {
+                    pre();
 
-            ors();
+                    this.context.state++;
 
-        }
+                    break;
 
-        switch (this.context.state) {
+                case 1:
 
-            case 0:
+                    post();
 
-                pre();
+                    this.context.state++;
 
-                this.context.state++;
+                    this.template[0] = template;
 
-                break;
+                    this.init();
 
-            case 1:
-
-                post();
-
-                this.context.state++;
-
-                this.template[0] = template;
-
-                this.init();
-
-                break;
-        }
-
-    };
-
-    return;
-}
-
-
-
-
-
-async init(): Promise < boolean > {
-
-    this.context = document;
-    
-    return await this.iterateTemplate();
-}
-
-/*
-    Iterate template data and generate html
-*/
-
-async iterateTemplate(): Promise < boolean > {
-
-    log.info('iterateTemplate' + trace, this.template);
-
-    if(trace) {
-
-        log.warn(`renderer::` + trace);
-
-        return false;
-    }
-
-		trace++;
-
-        await loop(this.template, this.createTemplateItem);
-        //return;
-    await loop(this.template, this.check);
-
-    this.elms = await this.defer;
-
-    //TODO: recursive
-    await loop([this.defer], this.createTemplateItem);
-    await loop(this.template, this.check);
-
-    this.elms = this.defer;
-
-    if((this.defer = await this.elms.filter(elm => elm ? elm.ref : null)).length > 0) {
-
-    trace--;
-
-    this.template = await[this.defer];
-    this.defer = [];
-    this.elms = await[];
-
-    return await this.iterateTemplate();
-
-}
-
-return true;
-	}
-
-/*
-    Create a DOM element in memory
-*/
-
-async createElementOfType(template: TemplateElement): Promise < any > {
-
-    const type: string | null = template.type;
-
-    if(!type) {
-        log.warn('Async.2018 tried to render an `undefined` element');
-    }
-
-		const target: Element | string = await this.createRenderTarget(template);
-
-    if(!target) {
-        log.warn('Async.2018 cannot find a target to render to');
-    }
-
-		const elm: HTML5Element = (await this.context.createElement(template.type): HTML5Element);
-
-    if(!elm) {
-        log.warn('Async.2018 could not create element', template);
-    }
-
-		elm.ref = template.ref;
-    elm.afterConstruct = template.afterConstruct;
-
-    switch(type) {
-
-			case "style":
-
-            elm.innerHTML = template.value;
-            elm.renderTo = await this.context.head;
-            
-    break;
-
-    default:
-
-        elm.oninput = template.oninput;
-
-    if(template.onclick) {
-
-        elm.onclick = (evt) => {
-
-            evt.stopPropagation();
-
-            if (typeof template.onclick == 'function') {
-
-                template.onclick();
-
-            } else {
-
-
-                console.warn('eval disabled')
-                eval(template.onclick);
-
+                    break;
             }
 
         };
 
+        return;
+    }
+    a(){
+        trace--;
+    }
+    async init(): Promise < boolean > {
+
+        //trace = 0;
+        this.context = document;
+
+        return await this.iterateTemplate();
     }
 
-    elm.setAttribute("style",template.style);
-    elm.value = template.value;
-    elm.renderTo = target;
-    
-    break;
-}
 
-//Defer template item
+    async update():any {
 
-if (target === '2430') {
+        await trace--;
 
-    await this.defer.push(template);
+        this.defer.length = 0;
+        this.elms.length = 0;
+        this.template[0] = await window['async-2018-mvc'].entry.filter(elm => elm.id !== Number(elm.id));
 
-    return false;
-}
+        await this.init();
 
-//Populate Props
+    }
 
-await this.populateProps(this.props, template, elm);
+    /*
+        Iterate template data and generate html
+    */
 
-//EVENT HOOK: afterConstruct
-this.afterConstruct(elm);
+    async iterateTemplate(): Promise < boolean > {
 
-return elm;
-	}
+      //log.info('iterateTemplate' + trace, this.template);
 
-/*
-    Generate a reference to the target element, or body if none
-*/
+      if(trace) {
 
-async createRenderTarget(template: TemplateElement): Promise < Element | string > {
+          log.warn(`renderer::` + trace);
+          log.warn(`renderer::` + trace);
 
-    //Verify if rendering target exists
-    if(template.renderTo != undefined)
-if (this.context.querySelectorAll(template.renderTo)[0] == undefined) {
+          return false;
+      }
 
-    return '2430';
-}
+      trace++;
 
-//Return querySelected element, fallback on body
-//		if (template.renderTo!=undefined)
-return this.context.querySelectorAll(template.renderTo)[0] || this.context.body;
-	}
+      await loop(this.template, this.createTemplateItem);
 
-/*
-    Populate data props on elements
-*/
+      await loop(this.template, this.check);
 
-async populateProps(props: Array < string >, template: __layer, elm: __layer) {
+      this.elms = await this.defer;
 
-    for (let prop in (props: any)) {
+      await loop([this.defer], this.createTemplateItem);
 
-        const temp: string = props[(prop: any)];
+      await loop(this.template, this.check);
 
-        if (template[temp]) {
-            elm[temp] = template[temp];
+      this.elms = this.defer;
+
+      if((this.defer = await this.elms.filter(elm => elm ? elm.ref : null)).length > 0) {
+
+          trace--;
+
+          this.template = await[this.defer];
+          this.defer = [];
+          this.elms = await[];
+
+          return await this.iterateTemplate();
+
+      }
+
+      //trace--;
+      return true;
+    }
+
+    /*
+        Create a DOM element in memory
+    */
+
+    async createElementOfType(template: TemplateElement): Promise < any > {
+
+        const type: string | null = template.type;
+
+        if(!type) {
+            log.warn('Async.2018 tried to render an `undefined` element');
+        }
+
+            const target: Element | string = await this.createRenderTarget(template);
+
+        if(!target) {
+            log.warn('Async.2018 cannot find a target to render to');
+        }
+
+            const elm: HTML5Element = (await this.context.createElement(template.type): HTML5Element);
+
+        if(!elm) {
+            log.warn('Async.2018 could not create element', template);
+        }
+
+            elm.ref = template.ref;
+        elm.afterConstruct = template.afterConstruct;
+
+        switch(type) {
+
+            case "style":
+
+            elm.innerHTML = template.value;
+            elm.renderTo = await this.context.head;
+
+            break;
+
+            default:
+
+                elm.oninput = template.oninput;
+
+            if(template.onclick) {
+
+                elm.onclick = (evt) => {
+
+                    evt.stopPropagation();
+
+                    if (typeof template.onclick == 'function') {
+
+                        template.onclick();
+
+                    } else {
+
+
+                        console.warn('eval disabled')
+                        eval(template.onclick);
+
+                    }
+
+                };
+
+            }
+
+            elm.setAttribute("style",template.style);
+            elm.value = template.value;
+            elm.renderTo = target;
+
+            break;
+        }
+
+        //Defer template item
+
+        if (target === '2430') {
+
+            await this.defer.push(template);
+
+            return false;
+        }
+
+        //Populate Props
+
+        await this.populateProps(this.props, template, elm);
+
+        //EVENT HOOK: afterConstruct
+        this.afterConstruct(elm);
+
+        return elm;
+    }
+
+    /*
+        Generate a reference to the target element, or body if none
+    */
+
+    async createRenderTarget(template: TemplateElement): Promise < Element | string > {
+
+        //Verify if rendering target exists
+        if(template.renderTo != undefined)
+    if (this.context.querySelectorAll(template.renderTo)[0] == undefined) {
+
+        return '2430';
+    }
+
+    //Return querySelected element, fallback on body
+    //		if (template.renderTo!=undefined)
+    return this.context.querySelectorAll(template.renderTo)[0] || this.context.body;
+        }
+
+    /*
+        Populate data props on elements
+    */
+
+    async populateProps(props: Array < string >, template: __layer, elm: __layer) {
+
+        for (let prop in (props: any)) {
+
+            const temp: string = props[(prop: any)];
+
+            if (template[temp]) {
+                elm[temp] = template[temp];
+            }
+
         }
 
     }
 
-}
+    /*
+        Generate elements based on TemplateItem
+    */
 
-/*
-    Generate elements based on TemplateItem
-*/
+    createTemplateItem = async (item: TemplateItem) => {
 
-createTemplateItem = async (item: TemplateItem) => {
+        const element: TemplateElement = await this.createElementOfType(item.value);
 
-    const element: TemplateElement = await this.createElementOfType(item.value);
+        if ((element)) {
+            this.elms[item.id] = (this.elements[item.id]) = element;
 
-    if ((element)) {
-        this.elms[item.id] = (this.elements[item.id]) = element;
+            element.template = item.id;
 
-        element.template = item.id;
+        } else {
 
-    } else {
-
-        // if debugger warning true :: defered :: console.log('false')
-        //console.warn('aw',this);
-    }
-
-}
-
-/*
-    VALIDATION
-*/
-
-check = async (temp: TemplateScheme) => {
-
-    const id: number = temp.id;
-
-    let elm: TemplateElement = this.elms[id];
-
-    if ((elm) && (elm.renderTo)) {
-
-        switch (typeof elm.renderTo) {
-
-            case "string":
-
-                let a = this.elms[id];
-                elm = this.elms[id] = await this.createElementOfType(a);
-
-                break;
+            // if debugger warning true :: defered :: console.log('false')
+            //console.warn('aw',this);
         }
 
-        this.scrollcount++;
+    }
 
-        ///NOT FOR PROD
+    /*
+        VALIDATION
+    */
 
-        if (elm.renderTo.id == 'scroll') {
+    check = async (temp: TemplateScheme) => {
 
-            if (elm.renderTo.children.length == 0) {
+        const id: number = temp.id;
 
-                elm.renderTo.appendChild(elm, null);
+        let elm: TemplateElement = this.elms[id];
 
-                return;
+        if ((elm) && (elm.renderTo)) {
+
+            switch (typeof elm.renderTo) {
+
+                case "string":
+
+                    let a = this.elms[id];
+                    elm = this.elms[id] = await this.createElementOfType(a);
+
+                    break;
             }
 
-            elm.renderTo.appendBefore = (element, t) => {
-                element.parentNode.insertBefore(t, element);
-            };
+            this.scrollcount++;
 
-            elm.renderTo.appendAfter = (element, t) => {
-                element.parentNode.insertBefore(t, element.nextSibling);
-            };
+            ///NOT FOR PROD
 
-            //APPEND PLUS ( usually at end ) TAKEOUT
+            if (elm.renderTo.id == 'scroll') {
 
-            if (elm.id == "plus") {
+                if (elm.renderTo.children.length == 0) {
 
-                elm.renderTo.appendBefore(elm.renderTo.children[0], elm);
+                    elm.renderTo.appendChild(elm, null);
 
-                return;
+                    return;
+                }
+
+                elm.renderTo.appendBefore = (element, t) => {
+                    element.parentNode.insertBefore(t, element);
+                };
+
+                elm.renderTo.appendAfter = (element, t) => {
+                    element.parentNode.insertBefore(t, element.nextSibling);
+                };
+
+                //APPEND PLUS ( usually at end ) TAKEOUT
+
+                if (elm.id == "plus") {
+
+                    elm.renderTo.appendBefore(elm.renderTo.children[0], elm);
+
+                    return;
+                }
+
+
+                elm.renderTo.insertBefore(elm, elm.renderTo.children[0].nextSibling);
+
+            } else this.elms[id].renderTo.appendChild(this.elms[id], null);
+
+
+            if (this.elms[id].mounted){
+
+                this.elms[id].mounted(temp, this);
+
             }
+            //END NOT FOR PROD
 
+            this.elms[id] = null;
 
-            elm.renderTo.insertBefore(elm, elm.renderTo.children[0].nextSibling)
-
-
-        } else this.elms[id].renderTo.appendChild(this.elms[id], null);
-
-        //END NOT FOR PROD
-
-        this.elms[id] = null;
+        }
 
     }
 
+    /*
+        HOOKS
+    */
+
+    afterConstruct(elm: TemplateElement) {
+
+        elm.afterConstruct ? elm.afterConstruct() : null;
+
+    }
+
+    /*
+    */
+    mounted: Function = (evt) => {
+        //console.log('eh', this, evt)
+    };
+
 }
 
-/*
-    HOOKS
-*/
 
-afterConstruct(elm: TemplateElement) {
+/**
+ * controller for the async view
+ */
 
-    elm.afterConstruct ? elm.afterConstruct() : null;
+class mvcc {
 
+    static ref;
+    static entries: Array<any> = [];
+    count: number = 0;
+
+    constructor() {
+
+        if (window['async-2018-mvc']) {
+
+            log.warn('DUPLICATE MVC INSTANCES');
+            return this;
+        }
+        return window['async-2018-mvc'] = this;
+    }
+
+    get entry() {
+
+        return mvcc.entries;
+    }
+
+    set entry(val: any) {
+        this.count++;
+        mvcc.entries.push(val);
+    }
+
+    get last() {
+
+        return mvcc.entries[this.count - 1];
+    }
+
+    append = (val) => (this.entry = val);
+    //append = (val) => log.debug(`async-2018 :: ./entry.js`, (this.entry = val));
 }
 
-/*
-*/
-onComplete: Function = () => { };
+/**
+ * tooling functions
+ */
 
+const _c = new mvcc();
+const _mvc = e => _c[e];
+const _mvcCmd = e => _mvc(e);
+const _mvcAppend = e => _mvcCmd('append')(e);
+const _mvcLast = e => _mvcCmd('last');
+
+const mvc = ((e) => { return _c })();
+
+class view {
+
+    mvc: any = mvc;
+
+    constructor(val) {
+
+        return this.assign(val);
+    }
+
+    assign(val) {
+
+        _mvcAppend(Object.assign({
+            ref: this,
+            type: 'template',
+            style: '',
+            id: 'undefined'
+        }, val));
+
+        return _mvcLast();
+    }
+
+    mounted() {
+
+    }
 }
 
-export {data, pipe};
+export {data, pipe, view, mvc};
