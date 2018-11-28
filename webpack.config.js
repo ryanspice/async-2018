@@ -3,6 +3,7 @@ const path = require('path');
 const log = require('loglevel');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WebpackManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
@@ -13,7 +14,10 @@ let build = env => {
 
 
 	if (!env)
-		env = { NODE_ENV: "development", production: "false" };
+		env = {
+			NODE_ENV: "development",
+			production: "false"
+		};
 
 	const type = env.NODE_ENV;
 
@@ -48,71 +52,74 @@ let build = env => {
 			]
 		},
 		module: {
-			rules: [
-				{
-					test: /\.js$/,
-					exclude: /node_modules/,
-					use: {
-						loader: "babel-loader",
-						options: {
-							"presets": [
-								"@babel/preset-flow",
-								[
-									"@babel/preset-env",
-									{
-										"modules": false,
-										"useBuiltIns": false,
-										"shippedProposals": true,
-										"targets": {
-											"browsers": type != "legacy" ? "cover 20% in CA" : "cover 97% in CA"
-										},
-										"loose": true
-									}
-								]],
-							"plugins": [
-								["@babel/plugin-proposal-decorators", {
-									"legacy": true
-								}],
-								"@babel/plugin-proposal-function-sent",
-								"@babel/plugin-proposal-export-namespace-from",
-								"@babel/plugin-proposal-export-default-from",
-								"@babel/plugin-proposal-numeric-separator",
-								"@babel/plugin-proposal-throw-expressions",
-								"@babel/plugin-syntax-dynamic-import",
-								"@babel/plugin-syntax-import-meta",
-								"@babel/plugin-syntax-flow",
-								["@babel/plugin-proposal-class-properties", {
+			rules: [{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: {
+					loader: "babel-loader",
+					options: {
+						"presets": [
+							"@babel/preset-flow", [
+								"@babel/preset-env", {
+									"modules": false,
+									"useBuiltIns": false,
+									"shippedProposals": true,
+									"targets": {
+										"browsers": type != "legacy" ? "cover 20% in CA" : "cover 97% in CA"
+									},
+									"loose": true
+								}
+							]
+						],
+						"plugins": [
+							["@babel/plugin-proposal-decorators", {
+								"legacy": true
+							}],
+							"@babel/plugin-proposal-function-sent",
+							"@babel/plugin-proposal-export-namespace-from",
+							"@babel/plugin-proposal-export-default-from",
+							"@babel/plugin-proposal-numeric-separator",
+							"@babel/plugin-proposal-throw-expressions",
+							"@babel/plugin-syntax-dynamic-import",
+							"@babel/plugin-syntax-import-meta",
+							"@babel/plugin-syntax-flow", [
+								"@babel/plugin-proposal-class-properties", {
 									"loose": false
-								}],
-								"@babel/plugin-proposal-json-strings",
-								["@babel/plugin-transform-runtime"],
-								"@babel/plugin-transform-flow-strip-types"]
-						}
-					},
-					include: [path.resolve('src'), path.resolve('test'), path.resolve('node_modules/webpack-dev-server/client')]
-				},
-				{
-					test: /bootstrap\.native/,
-					use: {
-						loader: 'bootstrap.native-loader'
+								}
+							],
+							"@babel/plugin-proposal-json-strings", [
+								"@babel/plugin-transform-runtime"
+							],
+							"@babel/plugin-transform-flow-strip-types"
+						]
 					}
 				},
-				{
-					test: /\.scss$/,
-					use: [{
-						loader: "style-loader" // creates style nodes from JS strings
-					}, {
-						loader: "css-loader" // translates CSS into CommonJS
-						, options: { url: false }
-					}, {
-						loader: "sass-loader" // compiles Sass to CSS
-					}]
-				},
-				{
-					test: /\.(eot|svg|ttf|woff|woff2)$/,
-					use: [{ loader: 'file?name=public/fonts/[name].[ext]' }]
+				include: [path.resolve('src'), path.resolve('test'), path.resolve(
+					'node_modules/webpack-dev-server/client')]
+			}, {
+				test: /bootstrap\.native/,
+				use: {
+					loader: 'bootstrap.native-loader'
 				}
-			]
+			}, {
+				test: /\.scss$/,
+				use: [{
+					loader: "style-loader" // creates style nodes from JS strings
+				}, {
+					loader: "css-loader" // translates CSS into CommonJS
+						,
+					options: {
+						url: false
+					}
+				}, {
+					loader: "sass-loader" // compiles Sass to CSS
+				}]
+			}, {
+				test: /\.(eot|svg|ttf|woff|woff2)$/,
+				use: [{
+					loader: 'file?name=public/fonts/[name].[ext]'
+				}]
+			}]
 		},
 		node: {
 			// prevent webpack from injecting useless setImmediate polyfill because Vue
@@ -129,10 +136,10 @@ let build = env => {
 		plugins: [
 			new FriendlyErrorsWebpackPlugin({
 				compilationSuccessInfo: {
-					messages: ['You application is running here http://localhost:8080'],
+					//messages: ['You application is running here http://localhost:8080'],
 					notes: ['Here be Dragons']
 				},
-				onErrors: function (severity, errors) {
+				onErrors: function(severity, errors) {
 					// You can listen to errors transformed and prioritized by the plugin
 					// severity can be 'error' or 'warning'
 				},
@@ -151,8 +158,10 @@ let build = env => {
 				chunkFilename: "[id].css"
 
 			}),
-			new CopyWebpackPlugin([
-				{
+
+			new WebpackManifestPlugin(),
+
+			new CopyWebpackPlugin([{
 					from: './src/core/def/index-dist.js',
 					to: './index.js'
 				},
@@ -189,7 +198,7 @@ let build = env => {
 		}
 	}
 
-	 type != "legacy" ?bundle.plugins.push(new DashboardPlugin()):null;
+	type != "legacy" ? bundle.plugins.push(new DashboardPlugin()) : null;
 
 	return bundle
 };

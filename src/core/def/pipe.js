@@ -25,7 +25,6 @@ const _props: Array<string> = [
     `innerHTML`
 ];
 
-
 class pipe {
 
     context:Document = document;
@@ -40,7 +39,10 @@ class pipe {
     trace:number = 0;
     scrollcount:number = 0;
 
-    constructor(template: TemplateScheme, pre: Function = () => { }, post: Function = () => { }){
+		pre:Function;
+		post:Function;
+
+    constructor(template: TemplateScheme = mvc.entry, pre: Function = pipe.pre, post: Function = pipe.post){
 
 
         const ors = this.context.onreadystatechange;
