@@ -24,10 +24,10 @@
 		"mini-css-extract-plugin": "^0.4.1",
 		"node-sass": "^4.9.0",
 		"sass-loader": "^7.0.1",
-		"style-loader": "^0.21.0"
+		"style-loader": "^0.21.0",
+		"webpack-manifest-plugin": "^2.0.4"
 	},
 	"devDependencies": {
-		"@babel/plugin-syntax-flow": "^7.0.0",
 		"@babel/cli": "^7.0.0",
 		"@babel/core": "^7.0.0",
 		"@babel/plugin-proposal-class-properties": "^7.0.0",
@@ -39,6 +39,7 @@
 		"@babel/plugin-proposal-numeric-separator": "^7.0.0",
 		"@babel/plugin-proposal-throw-expressions": "^7.0.0",
 		"@babel/plugin-syntax-dynamic-import": "^7.0.0",
+		"@babel/plugin-syntax-flow": "^7.0.0",
 		"@babel/plugin-syntax-import-meta": "^7.0.0",
 		"@babel/plugin-transform-flow-strip-types": "^7.0.0",
 		"@babel/plugin-transform-runtime": "^7.0.0",
@@ -50,7 +51,7 @@
 		"loglevel": "latest",
 		"webpack": "^4.20.0",
 		"webpack-bundle-analyzer": "^3.0.2",
-		"webpack-cli": "^3.1.1",
+		"webpack-cli": "^3.1.2",
 		"webpack-closure-compiler": "^2.1.6",
 		"webpack-dashboard": "^2.0.0",
 		"webpack-dev-server": "^3.1.3",
