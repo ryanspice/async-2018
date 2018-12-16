@@ -8,7 +8,7 @@
 	"scripts": {
 		"start": "yarn serve",
 
-		"dev": "yarn webpack --config webpack.prod.js --env.NODE_ENV=development --env.development",
+		"dev": "yarn webpack --config webpack.config.js --env.NODE_ENV=development --env.development",
 		"serve": "yarn webpack-dev-server --env.NODE_ENV=development --env.development",
 
 		"watch": "yarn dev --watch",

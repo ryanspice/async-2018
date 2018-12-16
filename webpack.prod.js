@@ -49,7 +49,14 @@ const production = {
 				NODE_ENV: JSON.stringify('production')
 			},
 		})
-	]
+	],
+
+			optimization: {
+
+								minimizer: [
+									new MinifyPlugin(MinifyPlugins)
+								]
+							}
 }
 
 module.exports = env => {

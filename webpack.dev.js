@@ -6,34 +6,6 @@ const path = require('path');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
-const MinifyPlugin = require("babel-minify-webpack-plugin");
-
-const MinifyPlugins = {
-	"booleans":true,
-	"builtIns":true,
-	"consecutiveAdds":true,
-	"deadcode":true,
-	"evaluate":true,
-	"flipComparisons":true,
-	"guards":true,
-	"infinity":true,
-	"memberExpressions":true,
-	"mergeVars":true,
-	"numericLiterals":true,
-	"propertyLiterals":true,
-	"regexpConstructors":true,
-	"replace":true,
-	"simplify":true,
-	"simplifyComparisons":true,
-	"typeConstructors":true,
-
-	"removeConsole":false,
-	"removeDebugger":false,
-	"removeUndefined":true,
-	"undefinedToVoid":true,
-
-	"mangle":false
-}
 
 /*
  *
@@ -218,9 +190,6 @@ const build = env => {
 
 			usedExports: true,
 
-				minimizer: [
-					new MinifyPlugin(MinifyPlugins)
-				],
 			splitChunks: {
 
 				cacheGroups: {
@@ -243,7 +212,7 @@ const build = env => {
 
 		devServer: {
 
-			port: 4300,
+			port: 8080,
 			contentBase: './dist',
 			hot: false,
 			inline: true,
