@@ -1,0 +1,14 @@
+{
+  "short_name": "async-template",
+  "name": "async2018",
+  "start_url": "/",
+  "background_color": "#242424",
+  "display": "standalone",
+  "orientation": "landscape",
+  "scope": "/",
+  "theme_color": "#242424",
+  "appjs": "async-template_legacy.js",
+  "async-template_legacy01js": "async-template_legacy.01.js",
+  "async-template_legacy10js": "async-template_legacy.10.js",
+  "async-template_legacy11js": "async-template_legacy.11.js"
+}

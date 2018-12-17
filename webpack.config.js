@@ -4,6 +4,9 @@ const build = require('./webpack.dev.js');
 const PolyfillInjectorPlugin = require('webpack-polyfill-injector');
 const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 
+const flow = require('flow-bin');
+const execFile = require('child_process').execFile;
+
 /*
  *	ES2015+ (es6/7)
  */
@@ -18,6 +21,14 @@ const processA = evt => {
 	temp.entry = [
 		'./src/index.js'
 	];
+
+	if(!evt.production) {
+
+		execFile(flow, ['check'], (err, stdout) => {
+			console.log(stdout);
+		});
+
+	}
 
 	return temp;
 };
@@ -36,9 +47,7 @@ const processB = evt => {
 	temp.output.filename = `${package.short_name}_legacy.js`;
 
 	temp.entry = {
-		app: `webpack-polyfill-injector?${JSON.stringify({
-	      modules: ['./src/index.js'] // list your entry modules for the `app` entry chunk
-	    })}!` // don't forget the trailing exclamation mark!
+		app: `webpack-polyfill-injector?${JSON.stringify({modules: ['./src/index.js']})}!`
 	};
 
 	temp.plugins.push(

@@ -6,19 +6,11 @@ const path = require('path');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
-
-/*
- *
- *	Build Base Process
- *
- */
-
 const build = env => {
-
 
 	// DEV CHECK TODO: remove one
 
-	if (!env) {
+	if(!env) {
 
 		env = {
 			NODE_ENV: "development",
@@ -29,7 +21,7 @@ const build = env => {
 
 	const type = env.NODE_ENV;
 
-	if (type == "production") {
+	if(type == "production") {
 		env.production = true;
 	}
 
@@ -85,7 +77,6 @@ const build = env => {
 								]
 							],
 							"plugins": [
-
 								["@babel/plugin-proposal-decorators", {
 									"legacy": true
 								}],
@@ -107,7 +98,7 @@ const build = env => {
 
 								// Flow
 
-								"@babel/plugin-transform-flow-strip-types"
+								//"@babel/plugin-transform-flow-strip-types"
 
 							]
 						}
@@ -122,7 +113,7 @@ const build = env => {
 
 			new webpack.DefinePlugin({
 				'process.env': {
-					NODE_ENV: JSON.stringify('production')
+					NODE_ENV: JSON.stringify('development')
 				},
 			}),
 
@@ -158,18 +149,17 @@ const build = env => {
 					"short_name": package.short_name,
 					"name": package.name,
 					"start_url": "/",
-					"background_color": "#3367D6",
+					"background_color": "#242424",
 					"display": "standalone",
 					"orientation": "landscape",
 					"scope": "/",
-					"theme_color": "#3367D6"
+					"theme_color": "#242424"
 				},
 				map: (file) => {
 					file.name = file.name.replace(/\./g, '');
 					return file;
 				}
 			}),
-
 
 		],
 
@@ -240,9 +230,9 @@ const build = env => {
 };
 
 function recursiveIssuer(m) {
-	if (m.issuer) {
+	if(m.issuer) {
 		return recursiveIssuer(m.issuer);
-	} else if (m.name) {
+	} else if(m.name) {
 		return m.name;
 	} else {
 		return false;

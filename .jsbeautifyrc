@@ -1,6 +1,4 @@
 {
-    "comment": "Configurations for [js, jsx, json] and Shared configurations",
-
     "brace_style": "collapse-preserve-inline",
     "break_chained_methods": false,
     "comma_first": false,
@@ -24,16 +22,8 @@
     "wrap_attributes_indent_size": 4,
     "wrap_line_length": 0,
     "unescape_strings": false,
-
-
-    "comment": "Configurations for [css] and its pre-processors [sass, scss, less]",
-
     "newline_between_rules": true,
     "selector_separator_newline": false,
-
-
-    "comment": "Configurations for [html, xml]",
-
     "extra_liners": ["head", "body", "/html"],
     "indent_inner_html": true,
     "indent_scripts": "normal",
