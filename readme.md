@@ -1,35 +1,35 @@
-# [Async.2018](https://github.com/ryanspice/async-2018) 
+# [AsyncTemplateToRender](https://github.com/ryanspice/async-2018)
 
-Async.2018 is a JavaScript library for building user interfaces which top down asynchronously.
+AsyncTemplateToRender is a JavaScript library for building user interfaces which top down asynchronously.
 
-* **Asynchronous:** Async.2018 creates a unique way to create interactive UI's by taking control of the DOM. Design component systems for your Web Frontend and have complete control over data. Each element is rendered individually and asynchronously.
-* **Object-Based:** Using the latest JavaScript (ES6/ES7) to scheme your UI, Async.2018's classes will map to elements providing minimal garbage when rendering/updating keeping data off the DOM.
-* **You already know how to manipulate the DOM:** If you're familar with JavasScript, ES6, Objects and the DOM, Async.2018 is for you.
+* **Asynchronous:** AsyncTemplateToRender creates a unique way to create interactive UI's by taking control of the DOM. Design component systems for your Web Frontend and have complete control over data. Each element is rendered individually and asynchronously.
+* **Object-Based:** Using the latest JavaScript (ES6/ES7) to scheme your UI, AsyncTemplateToRender's classes will map to elements providing minimal garbage when rendering/updating keeping data off the DOM.
+* **You already know how to manipulate the DOM:** If you're familar with JavasScript, ES6, Objects and the DOM, AsyncTemplateToRender is for you.
 
-[Learn Async.2018 today](https://reactjs.org/docs/getting-started.html).
+[Learn AsyncTemplateToRender today](https://reactjs.org/docs/getting-started.html).
 
 ## Installation
 
-Async.2018 is designed to be used as a rendering engine for UI components. 
+AsyncTemplateToRender is designed to be used as a rendering engine for UI components.
 
 **Simply install the library and start creating UI**!
 
-* [Add Async.2018 to a Website](https://github.com/ryanspice/async-2018) as a `<script>` tag in one minute.
-* [Import Async.2018 module](https://www.npmjs.com/package/async.2018) if you're looking to incorporate in a more powerful toolchain.
+* [Add AsyncTemplateToRender to a Website](https://github.com/ryanspice/async-2018) as a `<script>` tag in one minute.
+* [Import AsyncTemplateToRender module](https://www.npmjs.com/package/async.2018) if you're looking to incorporate in a more powerful toolchain.
 
-You can use Async.2018 as a `<script>` tag locally, or as a `async.2018` package on [npm](https://www.npmjs.com/).
+You can use AsyncTemplateToRender as a `<script>` tag locally, or as a `AsyncTemplateToRender` package on [npm](https://www.npmjs.com/).
 
 
 ## Usage & BuiltIn Legacy Support
 
-Async.2018 optimizes bundles and will export both an ES6 and ES5 bundle: **async-template**, and **async-template.legacy** respectively. 
+AsyncTemplateToRender optimizes bundles and will export both an ES6 and ES5 bundle: **ATRender**, and **ATRender_legacy** respectively.
 
 ```html
 <!-- Browsers know *not* to load this file -->
-<script async type="module" src="async-template.js"></script>
+<script async type="module" src="ATRender.js"></script>
 
 <!-- Older browsers load this file -->
-<script nomodule src="async-template.legacy.js"></script>
+<script nomodule src="ATRender_legacy.js"></script>
 
 <!-- executed after HTML is parsed -->
 <script type="module">
@@ -47,11 +47,12 @@ ES6 bundle provides an optimized webpack output which will support modern browse
 ## Example
 
 ```javascript
-require("async-template");
+
+import ATRender from 'ATRender';
 
 //predefine "view" style component
 
-class Login {
+class Login extends ATRenderer.view {
 
  constructor(){
 
@@ -72,7 +73,7 @@ class Login {
 
 //predefine "input" component to render after Login
 
-class LoginInput {
+class LoginInput extends ATRenderer.view {
 
  constructor(){
 
@@ -87,25 +88,29 @@ class LoginInput {
 
 }
 
-//render components listed in array.
+//render components as you create them
 
-new AsyncTemplate(
- [
-  new Login(),
-  new LoginInput()
- ]
-);
+new Login();
+new LoginInput();
+
+//render elements with objects
+
+new ATRender.pipe([
+	{
+		type:`a`,
+		id:``,
+		innerHTML:`HelloWorld`
+	}
+]);
 ```
 
-This example will render a 'section' with a link and h5 saying 'hello world'. 
-
-*Async.2018* will defer **LoginInput** to a second pass of rendering because it's target doesn't exist during the first pass. *Async.2018* supports recursive rendering, be aware that this can be slow and dangerous. 
+*AsyncTemplateToRender* will defer **LoginInput** to a second pass of rendering because it's target doesn't exist during the first pass. *AsyncTemplateToRender* supports recursive rendering, be aware that this can be slow and dangerous.
 
 ## Documentation
- 
+
 N/A
 
 
 ### License
 
-Async.2018 is [MIT licensed](./LICENSE).
+AsyncTemplateToRender is [MIT licensed](./LICENSE).

@@ -1,5 +1,5 @@
 //@flow
 
-import core from './core';
+import {data,pipe,view,mvc} from "./core/def/pipe";
 
-export default core;
+export {data,pipe,view,mvc};

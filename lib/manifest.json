@@ -1,5 +1,5 @@
 {
-  "short_name": "atr",
+  "short_name": "ATRender",
   "name": "async-template-and-render",
   "start_url": "/",
   "background_color": "#242424",
@@ -7,8 +7,8 @@
   "orientation": "landscape",
   "scope": "/",
   "theme_color": "#242424",
-  "appjs": "atr_legacy.js",
-  "atr_legacy01js": "atr_legacy.01.js",
-  "atr_legacy10js": "atr_legacy.10.js",
-  "atr_legacy11js": "atr_legacy.11.js"
+  "appjs": "ATRender_legacy.js",
+  "ATRender_legacy01js": "ATRender_legacy.01.js",
+  "ATRender_legacy10js": "ATRender_legacy.10.js",
+  "ATRender_legacy11js": "ATRender_legacy.11.js"
 }

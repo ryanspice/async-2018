@@ -39,10 +39,10 @@ class pipe {
     trace:number = 0;
     scrollcount:number = 0;
 
-		pre:Function;
-		post:Function;
+		static pre:Function = ()=>{};
+		static post:Function = ()=>{};
 
-    constructor(template: TemplateScheme = mvc.entry, pre: Function = pipe.pre, post: Function = pipe.post){
+    constructor(template: Array<TemplateScheme> = mvc.entry, pre: Function = pipe.pre, post: Function = pipe.post){
 
 
         const ors = this.context.onreadystatechange;
@@ -57,9 +57,13 @@ class pipe {
 
             }
 
-            pre();
+            if (pre) {
+							pre();
+						}
 
-            post();
+            if (post) {
+							post();
+						}
 
             this.template[0] = template;
 
@@ -80,7 +84,9 @@ class pipe {
 
                 case 0:
 
-                    pre();
+                    if (pre) {
+											pre();
+										}
 
                     this.context.state++;
 
@@ -88,7 +94,9 @@ class pipe {
 
                 case 1:
 
-                    post();
+                    if (post) {
+											post();
+										}
 
                     this.context.state++;
 
@@ -103,9 +111,11 @@ class pipe {
 
         return;
     }
-    a(){
+
+		a(){
         trace--;
     }
+
     async init(): Promise < boolean > {
 
         //trace = 0;
@@ -414,7 +424,7 @@ class pipe {
 
 class mvcc {
 
-    static ref;
+    static ref:mvcc;
     static entries: Array<any> = [];
     count: number = 0;
 
@@ -463,18 +473,18 @@ class view {
 
     mvc: any = mvc;
 
-    constructor(val) {
+    constructor(val:any) {
 
         return this.assign(val);
     }
 
-    assign(val) {
+    assign(val:any) {
 
         _mvcAppend(Object.assign({
             ref: this,
             type: 'template',
             style: '',
-            id: 'undefined'
+            id: 999
         }, val));
 
         return _mvcLast();
