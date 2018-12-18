@@ -10,8 +10,9 @@
 		"dev": "yarn webpack --config webpack.config.js --env.NODE_ENV=development --env.development",
 		"serve": "yarn webpack-dev-server --env.NODE_ENV=development --env.development",
 		"watch": "yarn dev --watch",
-		"prod": "yarn clean:dist && yarn webpack --config webpack.prod.js --env.NODE_ENV=production --env.production",
+		"prod": "yarn clean:dist && yarn clean:lib && yarn webpack --config webpack.prod.js --env.NODE_ENV=production --env.production",
 		"clean:dist": "rimraf dist",
+		"clean:lib": "rimraf lib",
 		"preview": "yarn webpack-dev-server --config webpack.prod.js --env.NODE_ENV=production --env.production",
 		"minify": "yarn minify dist -d lib",
 		"thread": "yarn webpack-dashboard yarn prod --watch"

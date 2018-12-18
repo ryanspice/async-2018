@@ -1,14 +1,14 @@
 {
-  "short_name": "async-template",
-  "name": "async2018",
+  "short_name": "atr",
+  "name": "async-template-and-render",
   "start_url": "/",
   "background_color": "#242424",
   "display": "standalone",
   "orientation": "landscape",
   "scope": "/",
   "theme_color": "#242424",
-  "appjs": "async-template_legacy.js",
-  "async-template_legacy01js": "async-template_legacy.01.js",
-  "async-template_legacy10js": "async-template_legacy.10.js",
-  "async-template_legacy11js": "async-template_legacy.11.js"
+  "appjs": "atr_legacy.js",
+  "atr_legacy01js": "atr_legacy.01.js",
+  "atr_legacy10js": "atr_legacy.10.js",
+  "atr_legacy11js": "atr_legacy.11.js"
 }
