@@ -1,8 +1,8 @@
 {
-	"name": "async2018",
-	"short_name": "async-template",
+	"name": "async-template-and-render",
+	"short_name": "atr",
 	"level": "info",
-	"version": "1.1.0-RC3",
+	"version": "1.1.0-RC4",
 	"description": "",
 	"author": "Ryan Tyler Spice-Finnie <spice.ryan@hotmail.com>",
 	"scripts": {

@@ -22,7 +22,7 @@
     "wrap_attributes_indent_size": 4,
     "wrap_line_length": 0,
     "unescape_strings": false,
-    "newline_between_rules": true,
+    "newline_between_rules": false,
     "selector_separator_newline": false,
     "extra_liners": ["head", "body", "/html"],
     "indent_inner_html": true,

@@ -68,7 +68,7 @@ const build = env => {
 									"@babel/preset-env", {
 										"modules": false,
 										"useBuiltIns": false,
-										"shippedProposals": true,
+										"shippedProposals": false,
 										"targets": {
 											"browsers": type != "legacy" ? "cover 20% in CA" : "cover 97% in CA"
 										},
@@ -89,11 +89,18 @@ const build = env => {
 								"@babel/plugin-syntax-import-meta",
 								"@babel/plugin-syntax-flow", [
 									"@babel/plugin-proposal-class-properties", {
-										"loose": false
+										"loose": true
 									}
 								],
-								"@babel/plugin-proposal-json-strings", [
-									"@babel/plugin-transform-runtime"
+								"@babel/plugin-proposal-json-strings",
+								[
+									"@babel/plugin-transform-runtime",
+									{
+										"corejs": false,
+										"helpers": true,
+										"regenerator": false,
+										"useESModules": true
+									}
 								],
 
 								// Flow
