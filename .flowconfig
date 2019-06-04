@@ -1,25 +1,34 @@
 [ignore]
-.*/node_modules/*
-.*/dist/.*
+
 .*/build/.*
 .*/test/.*
 .*/config/.*
 .*/static/.*
+.*/node_modules/**/.*
 
 [include]
-.*/flow-typed/.*
-.*/src/.*
+
+
+[libs]
+./src/**.*
+./src/interfaces.js
+./flow-typed/
+flow/
+node_modules/vue-flow-definitions/definitions/
+
+[lints]
 
 [options]
-module.name_mapper='^src/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
 module.system=haste
 esproposal.class_static_fields=enable
 esproposal.class_instance_fields=enable
-module.ignore_non_literal_requires=true
 esproposal.decorators=ignore
-esproposal.export_star_as=enable
+
+module.file_ext=.vue
 module.file_ext=.js
-module.file_ext=.css
-module.file_ext=.scss
+# webpack module alias
+module.name_mapper='^src/\(.*\)$' -> '<PROJECT_ROOT>/src/\1'
 
 [strict]
+
+[untyped]

@@ -1,0 +1,198 @@
+<% var item, key %><%
+htmlWebpackPlugin.options.appMountIds = htmlWebpackPlugin.options.appMountIds || [] %><%
+htmlWebpackPlugin.options.lang = htmlWebpackPlugin.options.lang || "en" %><%
+htmlWebpackPlugin.options.links = htmlWebpackPlugin.options.links || [] %><%
+htmlWebpackPlugin.options.meta = htmlWebpackPlugin.options.meta || [] %><%
+htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
+%><!DOCTYPE html>
+<html lang="<%= htmlWebpackPlugin.options.lang %>"<% if (htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %>>
+  <head>
+
+    <meta charset="utf-8">
+
+    <meta content="ie=edge" http-equiv="x-ua-compatible"><%
+
+    if (htmlWebpackPlugin.options.baseHref) { %>
+    <base href="<%= htmlWebpackPlugin.options.baseHref %>"><%
+    } %><%
+
+    if (Array.isArray(htmlWebpackPlugin.options.meta)) { %><%
+      for (item of htmlWebpackPlugin.options.meta) { %>
+    <meta<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>><%
+      } %><%
+    } %><%
+
+    %>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+
+		<%
+    if (htmlWebpackPlugin.files.favicon) { %>
+    <link href="<%= htmlWebpackPlugin.files.favicon %>" rel="shortcut icon" /><%
+    } %><%
+
+    if (htmlWebpackPlugin.options.mobile) { %>
+    <meta content="width=device-width, initial-scale=1" name="viewport"><%
+    } %><%
+
+    for (item of htmlWebpackPlugin.options.links) { %><%
+      if (typeof item === 'string' || item instanceof String) { item = { href: item, rel: 'stylesheet' } } %>
+    <link<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %> /><%
+    } %><%
+
+    for (key in htmlWebpackPlugin.files.css) { %><%
+      if (htmlWebpackPlugin.files.cssIntegrity) { %>
+    <link
+      href="<%= htmlWebpackPlugin.files.css[key] %>"
+      rel="stylesheet"
+      integrity="<%= htmlWebpackPlugin.files.cssIntegrity[key] %>"
+      crossorigin="<%= webpackConfig.output.crossOriginLoading %>" /><%
+      } else { %>
+    <link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet" /><%
+      } %><%
+    } %><%
+    if (htmlWebpackPlugin.options.headHtmlSnippet) { %>
+    <%= htmlWebpackPlugin.options.headHtmlSnippet %><%
+    }
+
+    for (key in htmlWebpackPlugin.files.chunks) { %><%
+      if (htmlWebpackPlugin.files.jsIntegrity) { %>
+    <script defer
+      src="<%= htmlWebpackPlugin.files.chunks[key].entry %>"
+      type="module"
+      integrity="<%= htmlWebpackPlugin.files.jsIntegrity[htmlWebpackPlugin.files.js.indexOf(htmlWebpackPlugin.files.chunks[key].entry)] %>"
+      crossorigin="<%= webpackConfig.output.crossOriginLoading %>"></script><%
+      } else { %>
+    <script defer src="<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="module"></script><%
+      } %><%
+    }
+
+		%>
+
+		<style>
+
+			message {
+
+				  font-size: 18px;
+				  background: -webkit-gradient(linear,left top,right top,color-stop(0, #4d4d4d),color-stop(0.4, #4d4d4d),color-stop(0.5, white),color-stop(0.6, #4d4d4d),color-stop(1, #4d4d4d));
+				  -webkit-background-clip: text;
+				  -webkit-text-fill-color: transparent;
+				  -webkit-animation: slidetounlock 15s infinite;
+				  font-family: Heebo, "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+				  font-weight: 300;
+				  padding: 0;
+				  width: 200%;
+			}
+
+			@-webkit-keyframes slidetounlock {
+			  0% {
+			    background-position: -720px 0;
+			  }
+			  100% {
+			    background-position: 720px 0;
+			  }
+			}
+
+		</style>
+
+		<%
+
+    for (item of htmlWebpackPlugin.options.scripts) { %><%
+      if (typeof item === 'string' || item instanceof String) { item = { src: item, type: 'text/javascript' } } %>
+    <script<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>></script><%
+    } %>
+
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl + '&gtm_auth=GTM_AUTH_TOKEN&gtm_preview=GTM_PREVIEW_TOKEN&gtm_cookies_win=x'; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5PFFR28');</script>
+    <!-- End Google Tag Manager -->
+  </head>
+
+  <body>
+
+		<!-- EXTRAS -->
+
+		<watermark></watermark>
+
+		<!-- LOADER -->
+
+		<loader class="show stuck">
+
+			<br />
+			<br />
+
+			<img hidden width='383' height='125' id="loader-logo" src="./assets/img/logo.png" />
+			<message id="loader-message"></message>
+
+			<br />
+			<br />
+
+			<img class="spinner" src="https://cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif" />
+
+		</loader>
+
+
+		<%
+    if (htmlWebpackPlugin.options.unsupportedBrowser) { %>
+    <style>.unsupported-browser { display: none; }</style>
+    <div class="unsupported-browser">
+      Sorry, your browser is not supported. Please upgrade to the latest version or switch your browser to use this
+      site. See <a href="http://outdatedbrowser.com/">outdatedbrowser.com</a> for options.
+    </div><%
+    } %><%
+
+    if (htmlWebpackPlugin.options.bodyHtmlSnippet) { %>
+    <%= htmlWebpackPlugin.options.bodyHtmlSnippet %><%
+    } %><%
+
+    if (htmlWebpackPlugin.options.appMountId) { %>
+    <div id="<%= htmlWebpackPlugin.options.appMountId %>"><%
+      if (htmlWebpackPlugin.options.appMountHtmlSnippet) { %>
+    <%= htmlWebpackPlugin.options.appMountHtmlSnippet %><%
+      } %>
+    </div><%
+    } %><%
+
+    for (item of htmlWebpackPlugin.options.appMountIds) { %>
+    <div id="<%= item %>"></div><%
+    } %><%
+
+    if (htmlWebpackPlugin.options.window) { %>
+    <script type="text/javascript"><%
+      for (key in htmlWebpackPlugin.options.window) { %>
+      window['<%= key %>'] = <%= JSON.stringify(htmlWebpackPlugin.options.window[key]) %>;<%
+      } %>
+    </script><%
+    } %><%
+
+    if (htmlWebpackPlugin.options.inlineManifestWebpackName) { %>
+    <%= htmlWebpackPlugin.files[htmlWebpackPlugin.options.inlineManifestWebpackName] %><%
+    } %><%
+ %><%
+
+    if (htmlWebpackPlugin.options.devServer) { %>
+    <script src="<%= htmlWebpackPlugin.options.devServer %>/webpack-dev-server.js" type="text/javascript"></script><%
+    } %>
+
+	</body>
+
+  <!--
+
+  MANUAL LAUNCH
+
+  -->
+
+  <!-- 1 :: ES6 Module Support  -->
+
+  <script type="module" defer ></script>
+
+  <!-- 2 ::   promise based architechure, for when enevitibly the code fails for IE11 above. -->
+
+  <script nomodule type="application/x-javascript" defer ></script>
+
+</html>
