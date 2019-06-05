@@ -162,7 +162,8 @@ const build = (env,plugins_custom=[]) => {
 
 					exclude:[
 						path.resolve('./node_modules'),
-						path.resolve('../nw-ui-foundation/node_modules')
+						path.resolve('../async.2018/node_modules'),
+						path.resolve('../async-2018/node_modules')
 					],
 
 					use: {
@@ -201,7 +202,11 @@ const build = (env,plugins_custom=[]) => {
 
 								"@babel/flow",
 
-								["minify"]
+								["minify", {
+  builtIns: false,
+  evaluate: false,
+  mangle: false,
+}]
 							],
 
 							"plugins": [
@@ -256,9 +261,9 @@ const build = (env,plugins_custom=[]) => {
 					include: [
 						path.resolve('src'),
 						path.resolve('test'),
-						path.resolve('../nw-ui-foundation/'), // investigate externals issue???
-						path.resolve('@nw/nw-ui-foundation/src'),
-						path.resolve('@nw/nw-ui-foundation')
+						path.resolve('../async.2018/'), // investigate externals issue???
+						path.resolve('async.2018/src'),
+						path.resolve('async.2018')
 					]
 
 				}

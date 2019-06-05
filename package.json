@@ -36,6 +36,8 @@
 		"release:npm": "npm run deploy && npm publish ."
 	},
 	"author": "Ryan Tyler Spice-Finnie <spice.ryan@hotmail.com>",
+	"private": true,
+	"license": "UNLICENSED",
 	"dependencies": {
 		"@babel/core": "^7.4.3",
 		"@babel/plugin-proposal-class-properties": "^7.4.0",
@@ -65,6 +67,7 @@
 		"circular-dependency-plugin": "^5.0.2",
 		"copy-webpack-plugin": "^5.0.3",
 		"css-loader": "2.0.1",
+		"copyfiles": "^2.1.0",
 		"cssnano": "^4.1.7",
 		"duplicate-package-checker-webpack-plugin": "^3.0.0",
 		"esdoc": "^1.1.0",
@@ -113,7 +116,5 @@
 		"webpack-stats-graph": "^1.0.8",
 		"webpack-visualizer-plugin": "^0.1.11"
 	},
-	"devDependencies": {
-		"loglevel": "latest"
-	}
+	"devDependencies": {}
 }
