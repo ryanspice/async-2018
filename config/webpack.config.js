@@ -1,6 +1,3 @@
-/*
- *	Build Process Entry
- */
 
 const package = require("../package.json")
 
@@ -14,11 +11,12 @@ const application = evt => {
 
 	const temp = build(evt);
 
-	temp.output.library = `${package.short_name}`;
-	temp.output.chunkFilename = `[name].js`;
-	temp.output.filename = `[name].js`;
-
-	temp.output.library = `${package.short_name}`;
+	Object.assign(temp.output,{
+		library : `${package.short_name}`,
+		chunkFilename : `[name].js`,
+		filename : `[name].js`,
+		library : `${package.short_name}`
+	});
 
 	entry[`${package.short_name}`] = `./src`;
 

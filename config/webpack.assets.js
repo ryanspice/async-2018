@@ -29,14 +29,14 @@ module.exports = css = evt => {
 			chunkFilename: production ? '[id].css' : '[id].[hash].css',
 		}),
 
-		new CopyWebpackPlugin([{
-			from: 'src/assets',
-			to: 'assets',
-		}], {
-			ignore: [
-				'css/**/*.*'
-			]
-		})
+//		new CopyWebpackPlugin([{
+//			from: 'src/assets',
+//			to: 'assets',
+//		}], {
+//			ignore: [
+//				'css/**/*.*'
+//			]
+//		})
 
 	];
 
