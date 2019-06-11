@@ -1,32 +1,24 @@
 
-const package = require("../package.json")
-
-const build = require('./webpack.master.js');
-const legacy = require('./webpack.legacy.js');
-const assets = require('./webpack.assets.js');
-
+const merge = require('webpack-merge');
+const name = require("../package.json").short_name;
 const entry = {};
-
-const application = evt => {
-
-	const temp = build(evt);
-
-	Object.assign(temp.output,{
-		library : `${package.short_name}`,
-		chunkFilename : `[name].js`,
-		filename : `[name].js`,
-		library : `${package.short_name}`
-	});
-
-	entry[`${package.short_name}`] = `./src`;
-
-	temp.entry = entry;
-
-	return temp;
-};
+entry[name] = `./src`;
 
 module.exports = [
-	application,
-	legacy
-	,assets
+	(evt) => {
+
+		return merge(
+			require('./webpack.master.js')(evt),
+			{
+				entry:entry,
+				output:{
+					library : name,
+					chunkFilename : `[name].js`,
+					filename : `[name].js`
+				}
+			}
+		);
+	}
+	,require('./webpack.legacy.js')
+	,require('./webpack.assets.js')
 ];
