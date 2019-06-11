@@ -65,60 +65,17 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
     <script defer src="<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="module"></script><%
       } %><%
     }
-
 		%>
 
-		<style>
-
-			loader img {
-				color:white;
-			}
-
-		</style>
-
 		<%
-
     for (item of htmlWebpackPlugin.options.scripts) { %><%
       if (typeof item === 'string' || item instanceof String) { item = { src: item, type: 'text/javascript' } } %>
     <script<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>></script><%
     } %>
 
-  <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-    w[l] = w[l] || []; w[l].push({
-      'gtm.start':
-        new Date().getTime(), event: 'gtm.js'
-    }); var f = d.getElementsByTagName(s)[0],
-      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-        'https://www.googletagmanager.com/gtm.js?id=' + i + dl + '&gtm_auth=GTM_AUTH_TOKEN&gtm_preview=GTM_PREVIEW_TOKEN&gtm_cookies_win=x'; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-5PFFR28');</script>
-    <!-- End Google Tag Manager -->
   </head>
 
   <body>
-
-		<!-- EXTRAS -->
-
-		<watermark></watermark>
-
-		<!-- LOADER -->
-
-		<loader class="show stuck">
-
-			<br />
-			<br />
-
-			<img hidden width='383' height='125' id="loader-logo" src="./assets/img/logo.png" />
-			<message id="loader-message"></message>
-
-			<br />
-			<br />
-
-			<img class="spinner" src="https://loading.io/spinners/eclipse/lg.ring-loading-gif.gif" />
-
-		</loader>
-
-
 		<%
     if (htmlWebpackPlugin.options.unsupportedBrowser) { %>
     <style>.unsupported-browser { display: none; }</style>
@@ -163,18 +120,73 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
 
 	</body>
 
-  <!--
+	<script defer type="module">
 
-  MANUAL LAUNCH
+		const AsyncTemplate = async2018.pipe;
+		const AsyncView = async2018.view;
+		const AsyncController = async2018.mvc;
 
-  -->
+		class Main extends async2018.view {
 
-  <!-- 1 :: ES6 Module Support  -->
+			constructor(){
 
-  <script type="module" defer ></script>
+				super()
 
-  <!-- 2 ::   promise based architechure, for when enevitibly the code fails for IE11 above. -->
+				this.id = ``;
+				this.type = `main`;
+				this.renderTo = `body`;
+				this.sequence = 0;
+				this.style = `display:inline-block;width:100%;height:100%;padding:-2rem;background:rgba(25,25,25,0.25);`
+				this.mounted = async ()=>{
+					if (document.getElementsByTagName('loader'))
+					if (document.getElementsByTagName('loader')[0])
+					document.getElementsByTagName('loader')[0].remove();
+				};
+				this.innerHTML = ``;
 
-  <script nomodule type="application/x-javascript" defer ></script>
+			}
+
+		}
+
+		class HelloWorld extends async2018.view {
+
+			constructor(){
+
+				super()
+
+				this.id = ``;
+				this.type = `h2`;
+				this.renderTo = `main`;
+				this.sequence = 0;
+				this.style = `width:200px;margin:0px auto;color:white;padding:1rem;text-outline:1px black;`
+				this.mounted = async ()=>{
+					console.log('hello world');
+				};
+				this.innerHTML = `Hello World!!!`;
+
+			}
+
+		}
+
+		AsyncTemplate.pre = async function(){
+
+			window['async-2018-mvc'].entry.sort((a,b)=>{return (a.sequence?a.sequence:0)-(b.sequence?b.sequence:0)});
+
+		};
+
+		AsyncTemplate.post = () => {
+
+		};
+
+		window.onload = function onload(evt){
+
+			new Main();
+			new HelloWorld();
+			window.home = new AsyncTemplate();
+
+		};
+
+
+	</script>
 
 </html>

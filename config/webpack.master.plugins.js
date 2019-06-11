@@ -17,8 +17,8 @@ module.exports = [
 	new CircularDependencyPlugin({
 		exclude: /a\node_modules/,
 
-		failOnError: true,
-		allowAsyncCycles: false,
+		failOnError: false,
+		allowAsyncCycles: true,
 		cwd: process.cwd(),
 		onStart({
 			compilation
@@ -28,7 +28,7 @@ module.exports = [
 			paths,
 			compilation
 		}) {
-			compilation.errors.push(new Error(paths.join(' -> ')))
+			compilation.warnings.push(new Error(paths.join(' -> ')))
 		},
 		onEnd({
 			compilation

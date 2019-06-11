@@ -146,10 +146,7 @@ const build = (env,plugins_custom=[]) => {
 
 				{
 					test: /\.html$/,
-					loader: 'html-loader',
-					exclude:[
-						path.resolve('./template.html')
-					]
+					loader: 'html-loader'
 				},
 
 				/*
@@ -203,11 +200,11 @@ const build = (env,plugins_custom=[]) => {
 								"@babel/flow",
 
 								["minify", {
-  builtIns: false,
-  evaluate: false,
-  mangle: false,
-}]
-							],
+									  builtIns: false,
+									  evaluate: false,
+									  mangle: false,
+									}]
+								],
 
 							"plugins": [
 
@@ -357,95 +354,92 @@ const build = (env,plugins_custom=[]) => {
 
 			new HtmlWebpackPlugin({
 
-			//required
+				//required
 
-			inject: false,
-			template: ('./config/template.ejs'),
+				inject: false,
+				template: ('./src/index.ejs'),
 
-			//html
+				//html
 
-			headHtmlSnippet: `
+				headHtmlSnippet: `
 
-				<link rel="manifest" href="manifest.json">
-				<style>
+					<link rel="manifest" href="manifest.json">
+					<style>
 
-					.spinner {
-						position: absolute;
-						left: 50%;
-						top: 35%;
-						margin: 0px auto;
-						margin-left: -25px;
-						width: 50px;
-					}
+						html {
+							background:#252525;
+    					height: 100%;
+						}
 
-					watermark {
-						position: fixed;
-						bottom: 5px;
-						right: 5px;
-						opacity: 0.5;
-						z-index: 99;
-						color: rgba(25, 25, 25, 0.75);
-					}
+						body {
+							background:transparent;
+							display:inline-block;
+							width:100%;
+							height:100%;
+							margin:0px;
+						}
 
-					loader {
-						width: 100%;
-						height: 100%;
-						position: fixed;
-						left: 0px;
-						top: 0px;
-						background: rgba(255, 255, 255, 1);
-						z-index: 10;
-						text-align: center;
-					}
+						.spinner {
+							position: absolute;
+							left: 50%;
+							top: 35%;
+							margin: 0px auto;
+							margin-left: -25px;
+							width: 50px;
+						}
 
-					#loader-logo {
+						watermark {
+							position: fixed;
+							bottom: 5px;
+							right: 5px;
+							opacity: 0.5;
+							z-index: 99;
+							color: rgba(25, 25, 25, 0.75);
+						}
 
-						top:35%;
-						position:absolute;
-						left:50%;
-						margin-left:-195px;
-						margin-top:-145px;
+						loader {
+							width: 100%;
+							height: 100%;
+							position: fixed;
+							left: 0px;
+							top: 0px;
+							z-index: 10;
+							text-align: center;
+						}
 
-					}
+					</style>
+				`,
+				bodyHtmlSnippet:`
+					<loader>
 
-					#loader-message {
+						<img class="spinner" src="https://loading.io/spinners/eclipse/lg.ring-loading-gif.gif" />
+						<message></message>
 
+					</loader>
+				`,
+				//
 
-						top:35%;
-						position:absolute;
-						left:50%;
-						margin-left:-191px;
-						margin-top:75px;
-						width:383px;
+				fileName: `index.html`,
+				baseHref: `./`,
+				title: package.name,
+				cache: true,
+				minify: true,
 
-					}
+				//
 
-				</style>
-			`,
+				scripts: scripts[0] || [],
+				inlineManifestWebpackName: package.short_name + 'Manifest',
+				inlineSource: '.(js|css)',
 
-			//
+				//
 
-			fileName: `index.html`,
-			baseHref: `./`,
-			title: package.name,
-			cache: true,
-			minify: true,
+				meta:{
+					'viewport': 'width=device-width, initial-scale=1, shrink-to-fit=no',
+					'theme-color': '#252525'
+				}
 
-			//
-
-			scripts: scripts[0],
-			inlineManifestWebpackName: package.short_name + 'Manifest',
-			inlineSource: '.(js|css)',
-
-			//
-
-
-			meta:{
-				'viewport': 'width=device-width, initial-scale=1, shrink-to-fit=no',
-				'theme-color': '#4285f4'
 			}
-
-		}));
+		));
 
 
 		//Manifest
@@ -465,6 +459,7 @@ const build = (env,plugins_custom=[]) => {
 				"theme_color": "#3367D6",
 
 			},scripts[1]),
+
 			map: (file) => {
 
 				file.name = file.name.replace(/\./g, '');
