@@ -52,69 +52,69 @@ Vanilla ES6
 ```javascript
 
 
-		const AsyncTemplate = async2018.pipe;
-		const AsyncView = async2018.view;
-		const AsyncController = async2018.mvc;
+const AsyncTemplate = async2018.pipe;
+const AsyncView = async2018.view;
+const AsyncController = async2018.mvc;
 
-		class Main extends async2018.view {
+class Main extends async2018.view {
 
-			constructor(){
+	constructor(){
 
-				super()
+		super()
 
-				this.id = ``;
-				this.type = `main`;
-				this.renderTo = `body`;
-				this.sequence = 0;
-				this.style = `display:inline-block;width:100%;height:100%;padding:-2rem;background:rgba(25,25,25,0.25);`
-				this.mounted = async ()=>{
-					if (document.getElementsByTagName('loader'))
-					if (document.getElementsByTagName('loader')[0])
-					document.getElementsByTagName('loader')[0].remove();
-				};
-				this.innerHTML = ``;
-
-			}
-
-		}
-
-		class HelloWorld extends async2018.view {
-
-			constructor(){
-
-				super()
-
-				this.id = ``;
-				this.type = `h2`;
-				this.renderTo = `main`;
-				this.sequence = 0;
-				this.style = `width:200px;margin:0px auto;color:white;padding:1rem;text-outline:1px black;`
-				this.mounted = async ()=>{
-					console.log('hello world');
-				};
-				this.innerHTML = `Hello World!!!`;
-
-			}
-
-		}
-
-		AsyncTemplate.pre = async function(){
-
-			window['async-2018-mvc'].entry.sort((a,b)=>{return (a.sequence?a.sequence:0)-(b.sequence?b.sequence:0)});
-
+		this.id = ``;
+		this.type = `main`;
+		this.renderTo = `body`;
+		this.sequence = 0;
+		this.style = `display:inline-block;width:100%;height:100%;padding:-2rem;background:rgba(25,25,25,0.25);`
+		this.mounted = async ()=>{
+			if (document.getElementsByTagName('loader'))
+			if (document.getElementsByTagName('loader')[0])
+			document.getElementsByTagName('loader')[0].remove();
 		};
+		this.innerHTML = ``;
 
-		AsyncTemplate.post = () => {
+	}
 
+}
+
+class HelloWorld extends async2018.view {
+
+	constructor(){
+
+		super()
+
+		this.id = ``;
+		this.type = `h2`;
+		this.renderTo = `main`;
+		this.sequence = 0;
+		this.style = `width:200px;margin:0px auto;color:white;padding:1rem;text-outline:1px black;`
+		this.mounted = async ()=>{
+			console.log('hello world');
 		};
+		this.innerHTML = `Hello World!!!`;
 
-		window.onload = function onload(evt){
+	}
 
-			new Main();
-			new HelloWorld();
-			window.home = new AsyncTemplate();
+}
 
-		};
+AsyncTemplate.pre = async function(){
+
+	window['async-2018-mvc'].entry.sort((a,b)=>{return (a.sequence?a.sequence:0)-(b.sequence?b.sequence:0)});
+
+};
+
+AsyncTemplate.post = () => {
+
+};
+
+window.onload = function onload(evt){
+
+	new Main();
+	new HelloWorld();
+	window.home = new AsyncTemplate();
+
+};
 
 
 ```
