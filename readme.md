@@ -46,62 +46,77 @@ ES6 bundle provides an optimized webpack output which will support modern browse
 
 ## Example
 
+Vanilla ES6
+
+
 ```javascript
 
-import ATRender from 'ATRender';
 
-//predefine "view" style component
+		const AsyncTemplate = async2018.pipe;
+		const AsyncView = async2018.view;
+		const AsyncController = async2018.mvc;
 
-class Login extends ATRenderer.view {
+		class Main extends async2018.view {
 
- constructor(){
+			constructor(){
 
-  return {
-   type:`section`,
-   renderTo:`main`,
-   id:`login_form`,
-   innerHTML:`
-    <a>
-    <h2>Hello World/h2>
-    </a>
-   `
-  };
+				super()
 
- }
+				this.id = ``;
+				this.type = `main`;
+				this.renderTo = `body`;
+				this.sequence = 0;
+				this.style = `display:inline-block;width:100%;height:100%;padding:-2rem;background:rgba(25,25,25,0.25);`
+				this.mounted = async ()=>{
+					if (document.getElementsByTagName('loader'))
+					if (document.getElementsByTagName('loader')[0])
+					document.getElementsByTagName('loader')[0].remove();
+				};
+				this.innerHTML = ``;
 
-}
+			}
 
-//predefine "input" component to render after Login
+		}
 
-class LoginInput extends ATRenderer.view {
+		class HelloWorld extends async2018.view {
 
- constructor(){
+			constructor(){
 
-  return {
-   type:`input`,
-   renderTo:`login_form`,
-   className:`form-control`,
-   id:`userinput_0`
-  };
+				super()
 
- }
+				this.id = ``;
+				this.type = `h2`;
+				this.renderTo = `main`;
+				this.sequence = 0;
+				this.style = `width:200px;margin:0px auto;color:white;padding:1rem;text-outline:1px black;`
+				this.mounted = async ()=>{
+					console.log('hello world');
+				};
+				this.innerHTML = `Hello World!!!`;
 
-}
+			}
 
-//render components as you create them
+		}
 
-new Login();
-new LoginInput();
+		AsyncTemplate.pre = async function(){
 
-//render elements with objects
+			window['async-2018-mvc'].entry.sort((a,b)=>{return (a.sequence?a.sequence:0)-(b.sequence?b.sequence:0)});
 
-new ATRender.pipe([
-	{
-		type:`a`,
-		id:``,
-		innerHTML:`HelloWorld`
-	}
-]);
+		};
+
+		AsyncTemplate.post = () => {
+
+		};
+
+		window.onload = function onload(evt){
+
+			new Main();
+			new HelloWorld();
+			window.home = new AsyncTemplate();
+
+		};
+
+
 ```
 
 *AsyncTemplateToRender* will defer **LoginInput** to a second pass of rendering because it's target doesn't exist during the first pass. *AsyncTemplateToRender* supports recursive rendering, be aware that this can be slow and dangerous.
