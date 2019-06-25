@@ -32,7 +32,6 @@
 		"preview": "yarn parallel:assets && yarn webpack-dev-server --config ./config/webpack.prod.js --env.NODE_ENV=production --env.production",
 		"library": "yarn clean:lib && node ./config/script.minify.js",
 		"dashboard": "yarn webpack-dashboard yarn prod --watch",
-		"test": "mocha src/**/*.unit.test.js || true",
 		"release:npm": "npm run deploy && npm publish ."
 	},
 	"author": "Ryan Tyler Spice-Finnie <spice.ryan@hotmail.com>",
