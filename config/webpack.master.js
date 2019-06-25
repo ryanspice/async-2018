@@ -1,6 +1,6 @@
 
 /**
-* ADESA MASTER WEBPACK
+* MASTER WEBPACK
 */
 
 const path = require('path');
