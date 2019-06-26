@@ -229,7 +229,7 @@ const build = (env,plugins_custom=[]) => {
 										"useESModules": true
 									}
 								],
-
+								"@babel/plugin-proposal-optional-chaining",
 								["@babel/plugin-proposal-decorators", {
 									"legacy": true
 								}],
