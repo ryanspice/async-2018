@@ -6,6 +6,10 @@ import log from 'loglevel';
 
 import data from '../template/empty.data';
 
+import {
+	MD5
+} from './utils';
+
 let trace: number = 0;
 
 const _props: Array<string> = [
@@ -277,17 +281,17 @@ class pipe {
 
     async createRenderTarget(template: TemplateElement): Promise < Element | string > {
 
-        //Verify if rendering target exists
-        if(template.renderTo != undefined)
-    if (this.context.querySelectorAll(template.renderTo)[0] == undefined) {
+      //Verify if rendering target exists
+      if(template.renderTo != undefined)
+		    if (this.context.querySelectorAll(template.renderTo)[0] == undefined) {
 
-        return '2430';
+	        return '2430';
+	    }
+
+	    //Return querySelected element, fallback on body
+	    //		if (template.renderTo!=undefined)
+	    return this.context.querySelectorAll(template.renderTo)[0] || this.context.body;
     }
-
-    //Return querySelected element, fallback on body
-    //		if (template.renderTo!=undefined)
-    return this.context.querySelectorAll(template.renderTo)[0] || this.context.body;
-        }
 
     /*
         Populate data props on elements
@@ -424,37 +428,42 @@ class pipe {
 
 class mvcc {
 
-    static ref:mvcc;
-    static entries: Array<any> = [];
-    count: number = 0;
+	static options:Object = {
+		prefix:true,
+		prefixName:`ax-`
+	}
 
-    constructor() {
+  static ref:mvcc;
+  static entries: Array<any> = [];
+  count: number = 0;
 
-        if (window['async-2018-mvc']) {
+  constructor() {
 
-            log.warn('DUPLICATE MVC INSTANCES');
-            return this;
-        }
-        return window['async-2018-mvc'] = this;
-    }
+      if (window['async-2018-mvc']) {
 
-    get entry() {
+          log.warn('DUPLICATE MVC INSTANCES');
+          return this;
+      }
+      return window['async-2018-mvc'] = this;
+  }
 
-        return mvcc.entries;
-    }
+  get entry() {
 
-    set entry(val: any) {
-        this.count++;
-        mvcc.entries.push(val);
-    }
+      return mvcc.entries;
+  }
 
-    get last() {
+  set entry(val: any) {
+      this.count++;
+      mvcc.entries.push(val);
+  }
 
-        return mvcc.entries[this.count - 1];
-    }
+  get last() {
 
-    append = (val) => (this.entry = val);
-    //append = (val) => log.debug(`async-2018 :: ./entry.js`, (this.entry = val));
+      return mvcc.entries[this.count - 1];
+  }
+
+  append = (val) => (this.entry = val);
+  //append = (val) => log.debug(`async-2018 :: ./entry.js`, (this.entry = val));
 }
 
 /**
@@ -469,6 +478,8 @@ const _mvcLast = e => _mvcCmd('last');
 
 const mvc = ((e) => { return _c })();
 
+const _mvcId = e => String((mvcc.options.prefix?mvcc.options.prefixName:'') + MD5(`${_c.count}`));
+
 class view {
 
     mvc: any = mvc;
@@ -479,12 +490,11 @@ class view {
     }
 
     assign(val:any) {
-
         _mvcAppend(Object.assign({
             ref: this,
             type: 'template',
             style: '',
-            id: 999
+            id: _mvcId()
         }, val));
 
         return _mvcLast();
