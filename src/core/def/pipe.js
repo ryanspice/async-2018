@@ -478,31 +478,29 @@ const _mvcLast = e => _mvcCmd('last');
 
 const mvc = ((e) => { return _c })();
 
-const _mvcId = e => String((mvcc.options.prefix?mvcc.options.prefixName:'') + MD5(`${_c.count}`));
+const _mvcId = count => String((mvcc.options.prefix?mvcc.options.prefixName:'') + MD5(`${_c.count}`));
 
 class view {
 
-    mvc: any = mvc;
+    mvc: any = _c;
 
     constructor(val:any) {
 
-        return this.assign(val);
+      return this.assign(val);
     }
 
     assign(val:any) {
-        _mvcAppend(Object.assign({
-            ref: this,
-            type: 'template',
-            style: '',
-            id: _mvcId()
-        }, val));
 
-        return _mvcLast();
+      _mvcAppend(Object.assign({
+          ref: this,
+          type: 'template',
+          style: '',
+          id: _mvcId()
+      }, val));
+
+      return _mvcLast();
     }
 
-    mounted() {
-
-    }
 }
 
 export {data, pipe, view, mvc};
