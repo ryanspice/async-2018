@@ -199,13 +199,13 @@ class pipe {
             log.warn('Async.2018 tried to render an `undefined` element');
         }
 
-            const target: Element | string = await this.createRenderTarget(template);
+      	const target: Element | string = await this.createRenderTarget(template);
 
         if(!target) {
             log.warn('Async.2018 cannot find a target to render to');
         }
 
-            const elm: HTML5Element = (await this.context.createElement(template.type): HTML5Element);
+      	const elm: HTML5Element = (await this.context.createElement(template.type): HTML5Element);
 
         if(!elm) {
             log.warn('Async.2018 could not create element', template);
@@ -249,9 +249,13 @@ class pipe {
 
             }
 
-            elm.setAttribute("style",template.style);
-            elm.value = template.value;
-            elm.renderTo = target;
+						template.style ?
+            	elm.setAttribute("style",template.style):null;
+
+						template.value ?
+            	elm.value = template.value : null;
+
+						elm.renderTo = target;
 
             break;
         }
