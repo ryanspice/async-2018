@@ -211,53 +211,57 @@ class pipe {
             log.warn('Async.2018 could not create element', template);
         }
 
-            elm.ref = template.ref;
+        elm.ref = template.ref;
         elm.afterConstruct = template.afterConstruct;
+
+				/**
+				 * support specific elements
+				 * @param  {type} type element name
+				 */
 
         switch(type) {
 
-            case "style":
+          case "style":
 
-            elm.innerHTML = template.value;
-            elm.renderTo = await this.context.head;
+	          elm.innerHTML = template.value;
+	          elm.renderTo = await this.context.head;
 
-            break;
+          break;
 
-            default:
+          default:
 
-                elm.oninput = template.oninput;
+            elm.oninput = template.oninput;
 
-            if(template.onclick) {
+	          if(template.onclick) {
 
-                elm.onclick = (evt) => {
+              elm.onclick = (evt) => {
 
-                    evt.stopPropagation();
+                evt.stopPropagation();
 
-                    if (typeof template.onclick == 'function') {
+                if (typeof template.onclick == 'function') {
 
-                        template.onclick();
+                  template.onclick();
 
-                    } else {
+                } else {
 
+                  console.warn('eval disabled')
+                  eval(template.onclick);
 
-                        console.warn('eval disabled')
-                        eval(template.onclick);
+                }
 
-                    }
+              };
 
-                };
-
-            }
+	          }
 
 						template.style ?
-            	elm.setAttribute("style",template.style):null;
+	          	elm.setAttribute("style",template.style):null;
 
 						template.value ?
-            	elm.value = template.value : null;
+	          	elm.value = template.value : null;
 
 						elm.renderTo = target;
 
-            break;
+          break;
         }
 
         //Defer template item
