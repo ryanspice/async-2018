@@ -253,9 +253,6 @@ class pipe {
 
 	          }
 
-						template.style ?
-	          	elm.setAttribute("style",template.style):null;
-
 						template.value ?
 	          	elm.value = template.value : null;
 
@@ -272,6 +269,24 @@ class pipe {
 
             return false;
         }
+
+				// build stylesheet if needed
+
+				const style = cssText => {
+
+					let style = this.context.createElement('style');
+
+					style.type = 'text/css';
+
+					style.setAttribute('id',template.id.replace('ax-','ax-css-'));
+
+					style.appendChild(this.context.createTextNode(`${type} {${cssText}}`.trim()));
+
+					template.css = this.context.body.appendChild(style);
+
+				}
+
+				template.style ? style(template.style) : null;
 
         //Populate Props
 
