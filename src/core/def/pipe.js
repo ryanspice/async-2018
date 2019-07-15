@@ -280,7 +280,9 @@ class pipe {
 
 					style.setAttribute('id',template.id.replace('ax-','ax-css-'));
 
-					style.appendChild(this.context.createTextNode(`${type} {${cssText}}`.trim()));
+					template.type == `style`?
+						style.appendChild(this.context.createTextNode(`${cssText}`.trim()))
+						: style.appendChild(this.context.createTextNode(`${type} {${cssText}}`.trim()));
 
 					template.css = this.context.body.appendChild(style);
 
