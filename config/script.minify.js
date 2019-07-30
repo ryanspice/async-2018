@@ -48,7 +48,8 @@ fs.readdirSync('./dist/').filter(file => filters.some(rx => rx.test(file))).forE
 	}
 
 	const _in = `./dist/${file}`;
-	const _out = `./lib/${file.split('.js')[0]}.min.js`;
+	//const _out = `./lib/${file.split('.js')[0]}.min.js`;
+	const _out = `./lib/${file}`;
 
 	exec(`yarn minify ${_in} --outFile ${_out}`, // --builtIns false
 	  function(err, stdout, stderr) {

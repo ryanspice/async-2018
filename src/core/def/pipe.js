@@ -21,6 +21,7 @@ const _props: Array<string> = [
     'click',
 
     'mounted',
+    'sequence',
 
     'onclick',
     'onresize',
@@ -282,7 +283,7 @@ class pipe {
 
 					template.type == `style`?
 						style.appendChild(this.context.createTextNode(`${cssText}`.trim()))
-						: style.appendChild(this.context.createTextNode(`${type} {${cssText}}`.trim()));
+						: template.id.split("ax-").length==1?style.appendChild(this.context.createTextNode(`${type}[id="${template.id}"] {${cssText}}`.trim())):style.appendChild(this.context.createTextNode(`${type} {${cssText}}`.trim()));
 
 					template.css = this.context.body.appendChild(style);
 

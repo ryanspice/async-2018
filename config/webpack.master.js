@@ -185,7 +185,7 @@ const build = (env,plugins_custom=[]) => {
 
 										"targets": {
 
-											"browsers": type != "legacy" ? "last 1 year, cover 20% in CA, not ie<=11" : "cover 97% in CA, not ie<11"
+											"browsers": type != "legacy" ? "last 1 year, cover 97% in CA, not ie<=11" : "cover 20% in CA, not ie<11"
 
 											//	,"esmodules":type != "legacy"?true:false // This seems to create a larger bundle???
 

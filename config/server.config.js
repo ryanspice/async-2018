@@ -1,6 +1,17 @@
 module.exports = {
    "proxy": {
 
+		 				'/api/**': {
+		 					target: 'https://ryanspice.com',
+		 					secure: false,
+		 					changeOrigin: true
+		 				},
+
+						'/images/**': {
+							target: 'https://ryanspice.com',
+							secure: false,
+							changeOrigin: true
+						}
    },
 
     "historyApiFallback": true,
