@@ -2,6 +2,9 @@
 
 import {data,pipe,view,mvc} from "./core/def/pipe";
 
+import "./core/def/storage/storage.getobject";
+import "./core/def/storage/storage.setobject";
+
 /**
  * storage temp class
  * @type {[type]}
@@ -10,10 +13,10 @@ import {data,pipe,view,mvc} from "./core/def/pipe";
 class storage {
 	constructor(){
 		this.setObject = async (key,data) => {
-			return await sessionStorage.setItem(key,await JSON.stringify(data));
+			return await sessionStorage.setObject(key,data);
 		};
 		this.getObject = async (key) => {
-			return await JSON.parse(await sessionStorage.getItem(key))
+			return await sessionStorage.getObject(key);
 		};
 	}
 	async fetch(key,data){
