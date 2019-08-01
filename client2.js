@@ -1,38 +1,33 @@
 
-const env = '';
 const name = 'async.2018';
 
-try {
 
-var ftpClient = require('ftp-client'),
+const ftp = require("basic-ftp")
 
-config = {
-    host: 'ftp.ryanspice.com',
-    port: 21,
-    user: 'rspice',
-    password: 'Brussels234!'
-},
-options = {
-    logging: 'debug'
-},
-client = new ftpClient(config, options);
+example()
 
-client.connect(function () {
+async function example() {
+    const client = new ftp.Client()
+    client.ftp.verbose = true
+    try {
+        await client.access({
+				    host: 'ftp.ryanspice.com',
+				    port: 21,
+				    user: 'rspice',
+				    password: 'Brussels234!'
+        })
 
-	console.log('connected');
+				const out = `/domains/ryanspice.com/private_html/${name}/`;
+				await client.ensureDir(out);
 
-  client.upload(['dist/**'], `/domains/ryanspice.com/private_html/${name}`, {
-      baseDir: 'dist',
-      overwrite: 'older'
-  }, function (result) {
-      console.log(result);
-  });
+				await client.clearWorkingDir();
+				await client.uploadDir("dist/");
 
-});
-
-}catch(e){
-
-	console.log('failed to connect');
-	console.log(e);
-
+        console.log(await client.list())
+        //await client.upload(fs.createReadStream("README.md"), "README.md")
+    }
+    catch(err) {
+        console.log(err)
+    }
+    client.close()
 }
