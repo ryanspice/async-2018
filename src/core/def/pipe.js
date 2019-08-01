@@ -2,7 +2,14 @@
 
 import { default as loop } from './loop';
 
-import log from 'loglevel';
+//import log from 'loglevel';
+
+const log = {
+	warn:console.warn,
+	log:console.log,
+	debug:console.debug,
+	error:e=>new Error(e)
+}
 
 import data from '../template/empty.data';
 
