@@ -1,6 +1,6 @@
 FROM nevergone/alpine-yarn:3.10.0
 
-ADD client2.js /opt/app/client.js
+ADD client2.js /opt/app/client2.js
 
 WORKDIR /opt/app
 
@@ -24,4 +24,4 @@ RUN yarn deployWithoutDocs
 
 WORKDIR /opt/app
 
-RUN yarn node client.js
+RUN yarn node client2.js

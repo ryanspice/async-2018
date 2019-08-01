@@ -1,5 +1,7 @@
 
-const name = 'async.2018';
+const pkg = require('package.json');
+
+const name = pkg.name;
 
 
 const ftp = require("basic-ftp")
