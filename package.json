@@ -23,6 +23,7 @@
 		"dev": "yarn clean:dist && yarn parallel:assets && yarn parallel:dev",
 		"prod": "yarn clean:dist && yarn parallel:assets && yarn parallel:prod",
 		"deploy": "yarn clean:all && yarn parallel:assets && yarn docs && yarn parallel --no-open && yarn library",
+		"deployWithoutDocs": "yarn clean:all && yarn parallel:assets && yarn parallel --no-open && yarn library",
 		"watch": "yarn webpack --config=./config/webpack.config.js --env.NODE_ENV=development --env.development --watch",
 		"parallel": "yarn parallel:prod",
 		"parallel:stats": "yarn webpack --config=./config/webpack.prod2.js --env.NODE_ENV=development --env.development --max_old_space_size=4096 --profile --json > ./dist/stats.json && node ./config/script.clean.json.js",
