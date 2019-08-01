@@ -4,8 +4,6 @@ ADD client.js /opt/app/client.js
 
 WORKDIR /opt/app
 
-
-# Install yarn
 RUN mkdir -p /opt/
 
 ENV PATH "$PATH:/usr/local/bin"
@@ -21,22 +19,8 @@ RUN cd /tmp && yarn && mkdir -p /opt/app && cd /opt/app && ln -s /tmp/node_modul
 # Copy the code
 ADD . /opt/app
 
-RUN  ls && yarn deploy
-
-RUN echo "Successfully ran deploy"
-
-RUN yarn add ftp-client
+RUN yarn deploy && yarn add ftp-client
 
 WORKDIR /opt/app
 
 RUN yarn node client.js
-
-RUN ls
-
-WORKDIR /opt/
-
-RUN ls
-
-WORKDIR /
-
-RUN ls
