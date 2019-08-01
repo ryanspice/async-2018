@@ -4,3 +4,5 @@
 *Dockerfile*
 *docker-compose*
 node_modules
+./node_modules/
+./flow-typed/
