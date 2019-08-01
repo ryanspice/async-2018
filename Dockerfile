@@ -19,7 +19,8 @@ RUN cd /tmp && yarn && mkdir -p /opt/app && cd /opt/app && ln -s /tmp/node_modul
 # Copy the code
 ADD . /opt/app
 
-RUN yarn deployWithoutDocs && yarn add ftp-client
+RUN yarn deployWithoutDocs
+#RUN yarn deployWithoutDocs && yarn add basic-ftp && yarn add fs
 
 WORKDIR /opt/app
 
