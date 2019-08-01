@@ -23,7 +23,7 @@ client.connect(function () {
 
   client.upload(['dist/**'], `/domains/ryanspice.com/private_html/${env}/${name}`, {
       baseDir: 'dist',
-      overwrite: 'older'
+      overwrite: 'all'
   }, function (result) {
       console.log(result);
   });
