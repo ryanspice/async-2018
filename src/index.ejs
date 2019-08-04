@@ -134,7 +134,7 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
 				this.type = `main`;
 				this.renderTo = `body`;
 				this.sequence = 0;
-				this.style = `display:inline-block;width:100%;height:100%;padding:-2rem;background:rgba(25,25,25,0.25);`
+				this.style = `display:inline-block;width:100%;height:100%;padding:-2rem;background:rgba(25,25,25,0.25);text-align:center;`
 				this.mounted = async ()=>{
 					if (document.getElementsByTagName('loader'))
 					if (document.getElementsByTagName('loader')[0])
@@ -153,14 +153,20 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
 				super()
 
 				this.id = `test`;
-				this.type = `h2`;
+				this.type = `p`;
 				this.renderTo = `main`;
 				this.sequence = 0;
-				this.style = `width:200px;margin:0px auto;color:white;padding:1rem;text-outline:1px black;`
+				this.style = `width:200px;margin:0px auto;color:white;padding:1rem;text-outline:1px black;text-align:center;`
 				this.mounted = async ()=>{
 					console.log('hello world');
 				};
-				this.innerHTML = `Hello World!!!`;
+				this.innerHTML = `
+				<h2>Welcome to Async.2018 JavaScript</h2>
+				<br/>
+				<a style="color:white;" href="ryanspice.com">ryanspice.com</a>
+				<br/>
+				<a style="color:white;" href="https://github.com/ryanspice/async-2018">async-2018</a>
+				`;
 
 			}
 
