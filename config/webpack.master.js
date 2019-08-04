@@ -407,6 +407,10 @@ const build = (env,plugins_custom=[]) => {
 							text-align: center;
 						}
 
+						 @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+						 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+						 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
 						spinner {
 					    height: 111px;
 					    width: 111px;
