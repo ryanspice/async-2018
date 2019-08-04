@@ -407,14 +407,24 @@ const build = (env,plugins_custom=[]) => {
 							text-align: center;
 						}
 
+						spinner {
+					    height: 111px;
+					    width: 111px;
+					    background-color: transparent;
+					    border-radius: 50%;
+					    display: inline-block;
+					    -webkit-animation: spin 1s linear infinite;
+					    -moz-animation: spin 1s linear infinite;
+					    animation: spin 1s linear infinite;
+					    box-shadow: 0px 2px 0 0 rgba(25,25,25,0.25);
+						}
+
 					</style>
 				`,
 				bodyHtmlSnippet:`
 					<loader>
-
-						<img class="spinner" src="https://loading.io/spinners/eclipse/lg.ring-loading-gif.gif" />
+						<spinner></spinner>
 						<message></message>
-
 					</loader>
 				`,
 				//
