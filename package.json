@@ -2,7 +2,7 @@
 	"name": "async.2018",
 	"short_name": "async2018",
 	"level": "info",
-	"version": "1.2.0-beta.2",
+	"version": "1.2.0-beta.3",
 	"description": "",
 	"scripts": {
 		"flow-check": "flow --color=always",
@@ -89,6 +89,7 @@
 		"flow-typed": "^2.5.1",
 		"flow-webpack-plugin": "^1.2.0",
 		"glob-all": "^3.1.0",
+		"html-loader": "^0.5.5",
 		"html-webpack-externals-plugin": "^3.8.0",
 		"html-webpack-plugin": "^3.2.0",
 		"http-server": "^0.11.1",
@@ -118,7 +119,7 @@
 		"webpack-visualizer-plugin": "^0.1.11"
 	},
 	"devDependencies": {
-		"basic-ftp":"^3.8.0",
-		"fs":"latest"
+		"basic-ftp": "^3.8.0",
+		"fs": "latest"
 	}
 }
