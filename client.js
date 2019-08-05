@@ -11,7 +11,7 @@ async function example() {
     const client = new ftp.Client()
 
     client.ftp.verbose = true
-		
+
     try {
 
         await client.access({
@@ -24,7 +24,7 @@ async function example() {
 				const out = `/domains/ryanspice.com/private_html/${env}/${name}/`;
 				await client.ensureDir(out);
 				await client.clearWorkingDir();
-				await client.uploadDir("dist/");
+				await client.uploadDir("lib/");
 
     } catch(err) {
 
