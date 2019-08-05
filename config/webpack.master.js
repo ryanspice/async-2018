@@ -259,7 +259,8 @@ const build = (env,plugins_custom=[]) => {
 						path.resolve('src'),
 						path.resolve('test'),
 						path.resolve('../async.2018/'), // investigate externals issue???
-						path.resolve('async.2018/src'),
+						path.resolve('async.2018/src/*.js'),
+						path.resolve('async.2018/src/**/*.js'),
 						path.resolve('async.2018')
 					]
 
