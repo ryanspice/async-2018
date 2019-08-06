@@ -16,13 +16,14 @@ module.exports = legacy = evt => {
 	temp.output.library = `${package.short_name}_legacy`;
 	temp.output.chunkFilename = `[name].legacy.js`;
 	temp.output.filename = `[name].legacy.js`;
-
+	temp.entry[name] = `./src`;
+/*
 	entry[`${package.short_name}`]=`webpack-polyfill-injector?${JSON.stringify({
 			modules: './src' // list your entry modules for the `app` entry chunk
 		})}!`; // don't forget the trailing exclamation mark!
 
 	temp.entry = entry;
-
+*/
 
 	return temp;
 };
