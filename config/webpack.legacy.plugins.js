@@ -2,7 +2,7 @@
 const PolyfillInjectorPlugin = require('webpack-polyfill-injector');
 
 module.exports = [
-
+/*
 	new PolyfillInjectorPlugin({
 		minify:true,
 		singleFile:true,
@@ -10,5 +10,5 @@ module.exports = [
 		polyfills: require('./polyfills.js')
 
 	})
-
+*/
 ];

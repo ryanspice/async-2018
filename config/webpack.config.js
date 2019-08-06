@@ -19,6 +19,6 @@ module.exports = [
 			}
 		);
 	}
-	//,require('./webpack.legacy.js')
+	,require('./webpack.legacy.js')
 	,require('./webpack.assets.js')
 ];
