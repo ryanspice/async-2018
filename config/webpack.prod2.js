@@ -55,7 +55,7 @@ const production = {
 module.exports = (env => {
 	return [
 		merge(common[0](env), production),
-		merge(common[1](env), production)//,
-//		merge(common[2](env), production)
+		merge(common[1](env), production),
+		merge(common[2](env), production)
 	]
 })({});
