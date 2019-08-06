@@ -158,6 +158,9 @@ const build = (env,plugins_custom=[]) => {
 					test: /\.js?$/,
 
 					exclude:[
+						path.resolve('./dist'),
+						path.resolve('./lib'),
+						path.resolve('./docker'),
 						path.resolve('./node_modules'),
 						path.resolve('../async.2018/node_modules'),
 						path.resolve('../async-2018/node_modules')
@@ -258,10 +261,10 @@ const build = (env,plugins_custom=[]) => {
 					include: [
 						path.resolve('src'),
 						path.resolve('test'),
-						path.resolve('../async.2018/'), // investigate externals issue???
 						path.resolve('async.2018/src/*.js'),
 						path.resolve('async.2018/src/**/*.js'),
-						path.resolve('async.2018')
+						path.resolve('async.2018/config/*.js'),
+						path.resolve('async.2018/config/**/*.js')
 					]
 
 				}
