@@ -116,10 +116,10 @@
 		"webpack-merge": "^4.1.2",
 		"webpack-polyfill-injector": "^2.0.2",
 		"webpack-stats-graph": "^1.0.8",
-		"webpack-visualizer-plugin": "^0.1.11"
+		"webpack-visualizer-plugin": "^0.1.11",
+		"basic-ftp": "^3.8.0"
 	},
 	"devDependencies": {
-		"basic-ftp": "^3.8.0",
 		"fs": "latest"
 	}
 }
