@@ -7,8 +7,8 @@ const common = require('./webpack.config.js');
 
 let evt = () => {
 
-	const es6 = common[0](evt);
-	const es5 = common[1](evt);
+	const es6 = common[0];
+	const es5 = common[1];
 
 	return [
 		merge(es6, {}),
@@ -16,4 +16,4 @@ let evt = () => {
 	]
 };
 
-module.exports = evt();
+module.exports = common;

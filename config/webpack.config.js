@@ -1,16 +1,23 @@
 
+const master = require('ecmascript-toolkit/webpack.config.js');
 const merge = require('webpack-merge');
 const name = require("../package.json").short_name;
 const entry = {};
 entry[name] = `./src`;
+master[0].entry = entry;
 
 module.exports = [
 	(evt) => {
 
-		return merge(
+
+
+
+		// merge
+
+		const build = merge(
 			require('./webpack.master.js')(evt),
+			master[0],
 			{
-				entry:entry,
 				output:{
 					library : name,
 					chunkFilename : `[name].js`,
@@ -18,7 +25,12 @@ module.exports = [
 				}
 			}
 		);
+
+		// overwrite not merge
+
+
+		return build;
 	}
 	//,require('./webpack.legacy.js')
-	,require('./webpack.assets.js')
+
 ];

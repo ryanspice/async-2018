@@ -160,7 +160,8 @@ const build = (env,plugins_custom=[]) => {
 					exclude:[
 						path.resolve('./node_modules'),
 						path.resolve('../async.2018/node_modules'),
-						path.resolve('../async-2018/node_modules')
+						path.resolve('../async-2018/node_modules'),
+						path.resolve('../ecmascript-toolkit/node_modules')
 					],
 
 					use: {
@@ -259,6 +260,9 @@ const build = (env,plugins_custom=[]) => {
 						path.resolve('src'),
 						path.resolve('test'),
 						path.resolve('../async.2018/'), // investigate externals issue???
+						path.resolve('../ecmascript-toolkit/'),
+						path.resolve('../ecmascript-toolkit/src'),
+						path.resolve('ecmascript-toolkit'),
 						path.resolve('async.2018/src'),
 						path.resolve('async.2018')
 					]
@@ -286,20 +290,6 @@ const build = (env,plugins_custom=[]) => {
 			...plugins_custom
 
 		],
-
-		node: {
-
-			setImmediate: false,
-			dgram: 'empty',
-			fs: 'empty',
-			net: 'empty',
-			tls: 'empty',
-			child_process: 'empty',
-			global:false,
-			process:false,
-			buffer:false
-
-		},
 
 		performance: {
 
@@ -330,7 +320,7 @@ const build = (env,plugins_custom=[]) => {
 	 */
 
 	if (type != "legacy"){
-
+/*
 		const FlowWebpackPlugin = require('flow-webpack-plugin');
 
 		bundle.plugins.push(new FlowWebpackPlugin({
@@ -346,13 +336,13 @@ const build = (env,plugins_custom=[]) => {
 				return true;
 			}
 		}));
-
+*/
 		let scripts = (require('./script.files'))();
-
 
 		bundle.plugins.push(
 
 			new HtmlWebpackPlugin({
+/*
 
 				//required
 
@@ -452,8 +442,10 @@ const build = (env,plugins_custom=[]) => {
 					'theme-color': '#252525'
 				}
 
+ */
 			}
 		));
+
 
 
 		//Manifest

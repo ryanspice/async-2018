@@ -16,9 +16,9 @@ module.exports = css = evt => {
 
 	temp.target = 'web';
 	temp.output.library = 'css';
-	temp.output.filename = `css~entry.js`;
+	temp.output.filename = `css~[contenthash]~entry.js`;
 
-	temp.output.chunkFilename = `css~[name].js`;
+	temp.output.chunkFilename = `css~[contenthash]~[name].js`;
 
 	temp.entry = `./src/main.scss`;
 
