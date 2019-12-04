@@ -56,13 +56,13 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
 
     for (key in htmlWebpackPlugin.files.chunks) { %><%
       if (htmlWebpackPlugin.files.jsIntegrity) { %>
-    <script defer
+    <script
       src="<%= htmlWebpackPlugin.files.chunks[key].entry %>"
       type="module"
       integrity="<%= htmlWebpackPlugin.files.jsIntegrity[htmlWebpackPlugin.files.js.indexOf(htmlWebpackPlugin.files.chunks[key].entry)] %>"
       crossorigin="<%= webpackConfig.output.crossOriginLoading %>"></script><%
-      } else { %>
-    <script defer src="<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="module"></script><%
+      } else { %>q
+    <script   src="<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="module"></script><%
       } %><%
     }
 		%>
@@ -70,7 +70,7 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
 		<%
     for (item of htmlWebpackPlugin.options.scripts) { %><%
       if (typeof item === 'string' || item instanceof String) { item = { src: item, type: 'text/javascript' } } %>
-    <script<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>></script><%
+    <script async <% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>></script><%
     } %>
 
   </head>
@@ -122,8 +122,11 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
       background: darkslategrey;
     }
   </style>
-	<script defer type="module">
+	<script async defer type="module">
+      console.log(window.etk);
+      console.log(window.async2018);
 setTimeout(()=>{
+
 		const AsyncTemplate = async2018.pipe;
 		const AsyncView = async2018.view;
 		const AsyncController = async2018.mvc;
@@ -193,7 +196,7 @@ setTimeout(()=>{
 			window.home = new AsyncTemplate();
 
 		//};
-},300)
+},100)
 
 	</script>
 

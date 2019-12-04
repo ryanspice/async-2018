@@ -1,6 +1,6 @@
 //@flow
 
-import "ecmascript-toolkit";
+import "babel-loader?cacheDirectory!ecmascript-toolkit/src";
 
 import {data,pipe,view,mvc} from "./core/def/pipe";
 

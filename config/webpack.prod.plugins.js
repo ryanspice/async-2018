@@ -8,16 +8,6 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 
 
 module.exports = [
-
-	new webpack.DefinePlugin({
-
-		'process.env': {
-
-			NODE_ENV: JSON.stringify('production')
-
-		},
-
-	}),
 	new WebpackVisualizerPlugin(),
 	new BundleAnalyzerPlugin(
 		{
