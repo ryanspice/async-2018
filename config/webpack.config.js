@@ -1,24 +1,21 @@
 
-const merge = require('webpack-merge');
-const name = require("../package.json").short_name;
-const entry = {};
-entry[name] = `./src`;
-
 module.exports = [
-	(evt) => {
+	(env) => {
 
-		return merge(
-			require('./webpack.master.js')(evt),
-			{
-				entry:entry,
-				output:{
-					library : name,
-					chunkFilename : `[name].js`,
-					filename : `[name].js`
-				}
-			}
+		//const master = require('ecmascript-toolkit/webpack.config.js');
+		const merge = require('webpack-merge');
+		const name = require("../package.json").short_name;
+
+		const build = merge(
+			require('ecmascript-toolkit/webpack.config.js')(env)[0],
+			env.production?require('ecmascript-toolkit/config/webpack.prod.js')(env)[0]:{},
+			require('./webpack.master.js')(env)
 		);
+
+		const entry = {};
+		entry[name] = `./src`;
+		build.entry = entry;
+
+		return build;
 	}
-	//,require('./webpack.legacy.js')
-	,require('./webpack.assets.js')
 ];

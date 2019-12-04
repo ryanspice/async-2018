@@ -1,5 +1,7 @@
 //@flow
 
+import "babel-loader?cacheDirectory!ecmascript-toolkit/src";
+
 import {data,pipe,view,mvc} from "./core/def/pipe";
 
 import "./core/def/storage/storage.getobject";
@@ -24,5 +26,7 @@ class storage {
 	}
 }
 
-
+requestAnimationFrame(e=>{
+	window.async2018 = {data,pipe,view,mvc, storage};
+})
 export {data,pipe,view,mvc, storage};

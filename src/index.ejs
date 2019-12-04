@@ -56,13 +56,13 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
 
     for (key in htmlWebpackPlugin.files.chunks) { %><%
       if (htmlWebpackPlugin.files.jsIntegrity) { %>
-    <script defer
+    <script
       src="<%= htmlWebpackPlugin.files.chunks[key].entry %>"
       type="module"
       integrity="<%= htmlWebpackPlugin.files.jsIntegrity[htmlWebpackPlugin.files.js.indexOf(htmlWebpackPlugin.files.chunks[key].entry)] %>"
       crossorigin="<%= webpackConfig.output.crossOriginLoading %>"></script><%
-      } else { %>
-    <script defer src="<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="module"></script><%
+      } else { %>q
+    <script   src="<%= htmlWebpackPlugin.files.chunks[key].entry %>" type="module"></script><%
       } %><%
     }
 		%>
@@ -70,7 +70,7 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
 		<%
     for (item of htmlWebpackPlugin.options.scripts) { %><%
       if (typeof item === 'string' || item instanceof String) { item = { src: item, type: 'text/javascript' } } %>
-    <script<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>></script><%
+    <script async <% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %>></script><%
     } %>
 
   </head>
@@ -117,8 +117,15 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
     if (htmlWebpackPlugin.options.devServer) { %>
     <script src="<%= htmlWebpackPlugin.options.devServer %>/webpack-dev-server.js" type="text/javascript"></script><%
     } %>
-
-	<script defer type="module">
+  <style>
+    html {
+      background: darkslategrey;
+    }
+  </style>
+	<script async defer type="module">
+      console.log(window.etk);
+      console.log(window.async2018);
+setTimeout(()=>{
 
 		const AsyncTemplate = async2018.pipe;
 		const AsyncView = async2018.view;
@@ -174,7 +181,6 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
 
 		AsyncTemplate.pre = async function(){
 
-			window['async-2018-mvc'].entry.sort((a,b)=>{return (a.sequence?a.sequence:0)-(b.sequence?b.sequence:0)});
 
 		};
 
@@ -182,14 +188,15 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
 
 		};
 
-		window.onload = function onload(evt){
+		//window.onload = function onload(evt){
 
 			new Main();
 			new HelloWorld();
+			window['async-2018-mvc'].entry.sort((a,b)=>{return (a.sequence?a.sequence:0)-(b.sequence?b.sequence:0)});
 			window.home = new AsyncTemplate();
 
-		};
-
+		//};
+},100)
 
 	</script>
 
