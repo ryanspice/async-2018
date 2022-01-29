@@ -78,7 +78,7 @@ const build = (env,plugins_custom=[]) => {
 			filename: fileName,
 			library: package.short_name,
 			libraryTarget: 'umd',
-			chunkFilename: isHashed?env.production?chunkFilenameProd:chunkFilename:chunkFilename,
+			//chunkFilename: isHashed?env.production?chunkFilenameProd:chunkFilename:chunkFilename,
 			umdNamedDefine: true,
 			jsonpFunction: 'json'+package.short_name,
 			path: path.resolve(`./dist`),
